@@ -1,11 +1,39 @@
+"use client";
+
 import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Icon } from "@/components/global/icon";
 
+import { SignInValues } from "@/lib/types";
+import { SignInSchema } from "@/lib/types/sign-in-schema";
+
 export const SignInForm = () => {
+  const form = useForm<SignInValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(SignInSchema),
+  });
+
+  const onSubmit = async (values: SignInValues) => {
+    console.log(values);
+  };
+
   return (
     <div className="mx-auto w-full max-w-md space-y-8">
       <div>
@@ -23,40 +51,55 @@ export const SignInForm = () => {
           </Link>
         </p>
       </div>
-      <form
-        className="space-y-6"
-        method="post"
-        // action={signInWithEmail}
-      >
-        <div>
-          <Label htmlFor="email" className="sr-only">
-            Email address
-          </Label>
-          <Input
-            id="email"
+
+      <Form {...form}>
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
             name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="Email address"
-            className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="email" className="sr-only">
+                  Email address
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="Email address"
+                    // className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div>
-          <Label htmlFor="password" className="sr-only">
-            Password
-          </Label>
-          <Input
-            id="password"
+
+          <FormField
+            control={form.control}
             name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            placeholder="Password"
-            className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="password" className="sr-only">
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    id="password"
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Password"
+                    className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div>
+
           <Button
             type="submit"
             className="relative flex w-full justify-center rounded-md bg-foreground py-2 px-4 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -69,8 +112,9 @@ export const SignInForm = () => {
                 </div>
               )} */}
           </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-muted" />
