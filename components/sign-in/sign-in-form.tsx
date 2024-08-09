@@ -20,6 +20,7 @@ import { Icon } from "@/components/global/icon";
 
 import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
+import { cn } from "@/lib/utils";
 
 export const SignInForm = () => {
   const form = useForm<SignInValues>({
@@ -35,7 +36,7 @@ export const SignInForm = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-8">
+    <div className="mx-auto w-full max-w-sm space-y-8">
       <div>
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-foreground/90">
           Sign in to your account
@@ -68,7 +69,10 @@ export const SignInForm = () => {
                     type="email"
                     autoComplete="email"
                     placeholder="Email address"
-                    // className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                    className={cn(
+                      form.formState.errors.email &&
+                        "focus-visible:ring-red-500"
+                    )}
                     {...field}
                   />
                 </FormControl>
@@ -91,7 +95,10 @@ export const SignInForm = () => {
                     type="password"
                     autoComplete="current-password"
                     placeholder="Password"
-                    className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                    className={cn(
+                      form.formState.errors.password &&
+                        "focus-visible:ring-red-500"
+                    )}
                     {...field}
                   />
                 </FormControl>
