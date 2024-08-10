@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -21,6 +20,7 @@ import { Icon } from "@/components/global/icon";
 import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
 import { cn } from "@/lib/utils";
+import { ModeToggle } from "../global/mode-toggle";
 
 export const SignInForm = () => {
   const form = useForm<SignInValues>({
@@ -36,9 +36,9 @@ export const SignInForm = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-sm space-y-8">
+    <div className="mx-auto w-full max-w-xs sm:max-w-sm space-y-8">
       <div>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-foreground/90">
+        <h2 className="mt-6 text-center text-2xl sm:text-3xl font-bold tracking-tight text-foreground/90">
           Sign in to your account
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
@@ -76,7 +76,7 @@ export const SignInForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -102,15 +102,12 @@ export const SignInForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
 
-          <Button
-            type="submit"
-            className="relative flex w-full justify-center rounded-md bg-foreground py-2 px-4 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
+          <Button type="submit" className="w-full">
             Sign in
             {/* {lastSignedInMethod === "email" && (
                 <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
@@ -119,6 +116,7 @@ export const SignInForm = () => {
                 </div>
               )} */}
           </Button>
+          {/* <ModeToggle /> */}
         </form>
       </Form>
 
