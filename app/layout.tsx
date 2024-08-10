@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { ReactQueryClientProvider } from "@/lib/providers/react-query-client-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
+          <Toaster richColors duration={3000} />
         </ThemeProvider>
       </body>
     </html>

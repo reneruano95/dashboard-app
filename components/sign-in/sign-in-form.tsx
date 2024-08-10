@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,9 +21,8 @@ import { Icon } from "@/components/global/icon";
 import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
 import { cn } from "@/lib/utils";
-import { ModeToggle } from "../global/mode-toggle";
 import { signInWithEmail } from "@/lib/server-actions/auth";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -38,9 +38,11 @@ export const SignInForm = () => {
     const { email, password } = values;
     const { error } = await signInWithEmail({ email, password });
 
-    if (error) {
-      console.error("Failed to sign in", error);
-    }
+    toast.promise(signInWithEmail({ email, password }), {
+      loading: "Signing in...",
+      success: "Signed in successfully",
+      error: `Failed to sign in: ${error ? error.message : ""}`,
+    });
 
     router.push("/dashboard");
   };
