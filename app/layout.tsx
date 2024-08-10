@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import { ThemeProvider } from "@/lib/providers/theme-provider";
+import { ReactQueryClientProvider } from "@/lib/providers/react-query-client-provider";
 
 import "./globals.css";
 
@@ -25,7 +27,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
         </ThemeProvider>
       </body>
     </html>

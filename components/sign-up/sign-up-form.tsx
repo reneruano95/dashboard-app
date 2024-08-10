@@ -15,15 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Icon } from "@/components/global/icon";
 
 import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
 import { cn } from "@/lib/utils";
-import { ModeToggle } from "../global/mode-toggle";
-import { SignUpButton } from "../global/sign-up-button";
+import { signUpWithEmail } from "@/lib/server-actions/auth";
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const form = useForm<SignInValues>({
     defaultValues: {
       email: "",
@@ -33,23 +31,28 @@ export const SignInForm = () => {
   });
 
   const onSubmit = async (values: SignInValues) => {
-    console.log(values);
+    const { email, password } = values;
+    const { error } = await signUpWithEmail({ email, password });
+
+    if (error) {
+      console.error("Failed to sign up", error);
+    }
   };
 
   return (
     <div className="mx-auto w-full max-w-xs sm:max-w-sm space-y-8">
       <div>
         <h2 className="mt-6 text-center text-2xl sm:text-3xl font-bold tracking-tight text-foreground/90">
-          Sign in to your account
+          Sign up for a new account
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
           Or{" "}
           <Link
-            href="/sign-up"
+            href="/sign-in"
             className="font-medium text-foreground/80 hover:text-primary/90"
             prefetch={false}
           >
-            sign up for a new account
+            sign in to your account
           </Link>
         </p>
       </div>
@@ -122,60 +125,10 @@ export const SignInForm = () => {
           />
 
           <Button type="submit" className="relative w-full">
-            Sign in
-            {/* {lastSignedInMethod === "email" && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
-                  <div className="absolute -left-5 top-0 border-background border-[12px] border-r-accent" />
-                  Last used
-                </div>
-              )} */}
+            Sign up
           </Button>
-          {/* <ModeToggle /> */}
         </form>
       </Form>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-muted" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <Button
-          variant="outline"
-          className="flex w-full items-center justify-center"
-          disabled
-        >
-          <Icon name="Github" className="mr-2 h-5 w-5" />
-          Sign in with GitHub
-          {/* {lastSignedInMethod === "github" && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
-                  <div className="absolute -left-5 top-0 border-background border-[12px] border-r-accent" />
-                  Last used
-                </div>
-              )} */}
-        </Button>
-
-        <Button
-          variant="outline"
-          className="flex w-full items-center justify-center"
-          disabled
-        >
-          <Icon name="Chrome" className="mr-2 h-5 w-5" />
-          Sign in with Google
-          {/* {lastSignedInMethod === "google" && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
-                  <div className="absolute -left-5 top-0 border-background border-[12px] border-r-accent" />
-                  Last used
-                </div>
-              )} */}
-        </Button>
-      </div>
     </div>
   );
 };
