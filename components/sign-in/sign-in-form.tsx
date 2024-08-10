@@ -21,9 +21,11 @@ import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "../global/mode-toggle";
-import { SignUpButton } from "../global/sign-up-button";
+import { signInWithEmail } from "@/lib/server-actions/auth";
+import { useRouter } from "next/navigation";
 
 export const SignInForm = () => {
+  const router = useRouter();
   const form = useForm<SignInValues>({
     defaultValues: {
       email: "",
@@ -33,7 +35,14 @@ export const SignInForm = () => {
   });
 
   const onSubmit = async (values: SignInValues) => {
-    console.log(values);
+    const { email, password } = values;
+    const { error } = await signInWithEmail({ email, password });
+
+    if (error) {
+      console.error("Failed to sign in", error);
+    }
+
+    router.push("/dashboard");
   };
 
   return (
