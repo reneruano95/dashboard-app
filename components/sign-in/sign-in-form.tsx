@@ -54,12 +54,15 @@ export const SignInForm = () => {
       </div>
 
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1">
                 <FormLabel htmlFor="email" className="sr-only">
                   Email address
                 </FormLabel>
@@ -77,6 +80,11 @@ export const SignInForm = () => {
                   />
                 </FormControl>
                 <FormMessage className="text-xs" />
+                {!form.formState.errors.email && (
+                  <FormDescription className="text-xs">
+                    We'll never share your email with anyone else.
+                  </FormDescription>
+                )}
               </FormItem>
             )}
           />
@@ -85,7 +93,7 @@ export const SignInForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1">
                 <FormLabel htmlFor="password" className="sr-only">
                   Password
                 </FormLabel>
@@ -103,11 +111,16 @@ export const SignInForm = () => {
                   />
                 </FormControl>
                 <FormMessage className="text-xs" />
+                {!form.formState.errors.password && (
+                  <FormDescription className="text-xs">
+                    Must be at least 6 characters long.
+                  </FormDescription>
+                )}
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="relative w-full">
             Sign in
             {/* {lastSignedInMethod === "email" && (
                 <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
@@ -137,10 +150,10 @@ export const SignInForm = () => {
         >
           <Button
             variant="outline"
-            className="relative flex w-full items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground/80 shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="flex w-full items-center justify-center"
             disabled
           >
-            <Icon name="Github" className=" mr-2 h-5 w-5" />
+            <Icon name="Github" className="mr-2 h-5 w-5" />
             Sign in with GitHub
             {/* {lastSignedInMethod === "github" && (
                 <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
@@ -156,10 +169,10 @@ export const SignInForm = () => {
         >
           <Button
             variant="outline"
-            className="relative flex w-full items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground/80 shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="flex w-full items-center justify-center"
             disabled
           >
-            <Icon name="Chrome" className=" mr-2 h-5 w-5" />
+            <Icon name="Chrome" className="mr-2 h-5 w-5" />
             Sign in with Google
             {/* {lastSignedInMethod === "google" && (
                 <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
