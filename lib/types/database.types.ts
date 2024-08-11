@@ -11,28 +11,31 @@ export type Database = {
     Tables: {
       agencies: {
         Row: {
-          address: Json | null
+          agency_address: Json | null
+          agency_email: string | null
           agency_logo_url: string | null
+          agency_name: string
+          agency_website: string | null
           created_at: string
-          email: string | null
           id: string
-          name: string
         }
         Insert: {
-          address?: Json | null
+          agency_address?: Json | null
+          agency_email?: string | null
           agency_logo_url?: string | null
+          agency_name?: string
+          agency_website?: string | null
           created_at?: string
-          email?: string | null
           id?: string
-          name?: string
         }
         Update: {
-          address?: Json | null
+          agency_address?: Json | null
+          agency_email?: string | null
           agency_logo_url?: string | null
+          agency_name?: string
+          agency_website?: string | null
           created_at?: string
-          email?: string | null
           id?: string
-          name?: string
         }
         Relationships: []
       }
