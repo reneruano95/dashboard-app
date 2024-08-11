@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +23,6 @@ import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
 import { cn } from "@/lib/utils";
 import { signInWithEmail } from "@/lib/server-actions/auth";
-import { toast } from "sonner";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -38,13 +38,20 @@ export const SignInForm = () => {
     const { email, password } = values;
     const { error } = await signInWithEmail({ email, password });
 
-    toast.promise(signInWithEmail({ email, password }), {
-      loading: "Signing in...",
-      success: "Signed in successfully",
-      error: `Failed to sign in: ${error ? error.message : ""}`,
-    });
+    if (error) {
+      console.error(error);
+      return toast.error("Failed to sign in. Please try again.", {
+        description: JSON.stringify(error, null, 2),
+        descriptionClassName: "text-xs whitespace-pre-wrap",
+      });
+    }
 
-    router.push("/dashboard");
+    if (!error) {
+      toast.success("Signed in successfully.", {
+        description: "We'll never share your email with anyone else.",
+      });
+      router.push("/dashboard");
+    }
   };
 
   return (

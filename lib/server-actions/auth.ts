@@ -48,17 +48,26 @@ export const signInWithEmail = async ({ email, password }: SignInValues) => {
   const supabase = createServerClient();
 
   try {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      return { error: parseStringify(error) as AuthError };
+      return {
+        data: null,
+        error: parseStringify(error) as AuthError,
+      };
     }
 
-    return { error: null };
+    return {
+      data,
+      error: null,
+    };
   } catch (error) {
-    return { error: parseStringify(error) as AuthError };
+    return {
+      data: null,
+      error: parseStringify(error) as AuthError,
+    };
   }
 };
