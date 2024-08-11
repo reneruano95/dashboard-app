@@ -21,8 +21,8 @@ import { Icon } from "@/components/global/icon";
 
 import { SignInValues } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/sign-in-schema";
-import { cn } from "@/lib/utils";
 import { signInWithEmail } from "@/lib/server-actions/auth";
+import { cn } from "@/lib/utils";
 
 export const SignInForm = () => {
   const router = useRouter();

@@ -1,8 +1,33 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "./lib/supabase/middleware";
+
+// Add public routes here
+const publicRoutes = ["/", "/sign-in", "/sign-up"];
+const isPublicRoute = (path: string) => publicRoutes.includes(path);
+
+// Add private routes here
+const privateRoutes = ["/dashboard"];
+const isPrivateRoute = (path: string) => privateRoutes.includes(path);
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (isPrivateRoute(request.nextUrl.pathname)) {
+    if (error || !user) {
+      return NextResponse.redirect(new URL("/sign-in", request.nextUrl));
+    }
+  }
+
+  if (isPublicRoute(request.nextUrl.pathname)) {
+    if (user) {
+      return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
+    }
+  }
 
   return response;
 }
