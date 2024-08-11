@@ -35,7 +35,7 @@ export const SignInForm = () => {
 
   const onSubmit = async (values: SignInValues) => {
     const { email, password } = values;
-    const { error } = await signInWithEmail({ email, password });
+    const { data: user, error } = await signInWithEmail({ email, password });
 
     if (error) {
       console.error(error);
@@ -45,11 +45,11 @@ export const SignInForm = () => {
       });
     }
 
-    if (!error) {
+    if (!error && user) {
       toast.success("Signed in successfully.", {
         description: "We'll never share your email with anyone else.",
       });
-      router.push("/dashboard");
+      router.push(`/dashboard/`);
     }
   };
 

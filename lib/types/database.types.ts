@@ -15,6 +15,7 @@ export type Database = {
           agency_email: string | null
           agency_logo_url: string | null
           agency_name: string
+          agency_status: string
           agency_website: string | null
           created_at: string
           id: string
@@ -24,6 +25,7 @@ export type Database = {
           agency_email?: string | null
           agency_logo_url?: string | null
           agency_name?: string
+          agency_status?: string
           agency_website?: string | null
           created_at?: string
           id?: string
@@ -33,6 +35,7 @@ export type Database = {
           agency_email?: string | null
           agency_logo_url?: string | null
           agency_name?: string
+          agency_status?: string
           agency_website?: string | null
           created_at?: string
           id?: string
@@ -47,6 +50,7 @@ export type Database = {
           full_name: string | null
           id: string
           role: Database["public"]["Enums"]["role"] | null
+          status: string
           updated_at: string | null
           username: string | null
         }
@@ -57,6 +61,7 @@ export type Database = {
           full_name?: string | null
           id: string
           role?: Database["public"]["Enums"]["role"] | null
+          status?: string
           updated_at?: string | null
           username?: string | null
         }
@@ -67,6 +72,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           role?: Database["public"]["Enums"]["role"] | null
+          status?: string
           updated_at?: string | null
           username?: string | null
         }

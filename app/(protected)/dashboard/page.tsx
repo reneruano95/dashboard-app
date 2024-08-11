@@ -1,3 +1,5 @@
+import { SignOutButton } from "@/components/global/sign-out-button";
+
 export default function DashboardPage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen space-y-4">
@@ -7,6 +9,7 @@ export default function DashboardPage() {
       <p className="text-center text-lg text-foreground/80">
         You are now signed in.
       </p>
+      <SignOutButton />
     </div>
   );
 }

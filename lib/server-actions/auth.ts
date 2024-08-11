@@ -1,10 +1,12 @@
 "use server";
 
 import { AuthError } from "@supabase/supabase-js";
+import { redirect } from "next/navigation";
 
 import { createServerClient } from "../supabase/server";
 import { SignInValues } from "../types";
 import { parseStringify } from "../utils";
+import { revalidatePath } from "next/cache";
 
 // export const signUpWithEmail = async ({ email, password }: SignInValues) => {
 //   const supabase = createServerClient();
@@ -48,7 +50,10 @@ export const signInWithEmail = async ({ email, password }: SignInValues) => {
   const supabase = createServerClient();
 
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -61,7 +66,7 @@ export const signInWithEmail = async ({ email, password }: SignInValues) => {
     }
 
     return {
-      data,
+      data: user,
       error: null,
     };
   } catch (error) {
@@ -69,5 +74,30 @@ export const signInWithEmail = async ({ email, password }: SignInValues) => {
       data: null,
       error: parseStringify(error) as AuthError,
     };
+  }
+};
+
+export const signOut = async () => {
+  const supabase = createServerClient();
+
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      return {
+        error: parseStringify(error) as AuthError,
+      };
+    }
+
+    return {
+      error: null,
+    };
+  } catch (error) {
+    return {
+      error: parseStringify(error) as AuthError,
+    };
+  } finally {
+    revalidatePath("/sign-in");
+    redirect("/sign-in");
   }
 };
