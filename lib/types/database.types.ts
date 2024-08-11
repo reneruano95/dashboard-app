@@ -38,7 +38,7 @@ export type Database = {
       }
       users: {
         Row: {
-          agency_id: string
+          agency_id: string | null
           avatar_url: string | null
           email: string
           full_name: string | null
@@ -48,17 +48,17 @@ export type Database = {
           username: string | null
         }
         Insert: {
-          agency_id?: string
+          agency_id?: string | null
           avatar_url?: string | null
           email?: string
           full_name?: string | null
-          id?: string
+          id: string
           role?: Database["public"]["Enums"]["role"] | null
           updated_at?: string | null
           username?: string | null
         }
         Update: {
-          agency_id?: string
+          agency_id?: string | null
           avatar_url?: string | null
           email?: string
           full_name?: string | null
@@ -69,14 +69,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_company_id_fkey"
+            foreignKeyName: "users_agency_id_fkey"
             columns: ["agency_id"]
             isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "profiles_id_fkey"
+            foreignKeyName: "users_id_fkey"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
