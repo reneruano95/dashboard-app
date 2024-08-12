@@ -11,12 +11,6 @@ const isPrivateRoute = (path: string) => privateRoutes.includes(path);
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
-  const forwardedHost = request.headers.get("x-forwarded-host");
-  const origin = request.headers.get("origin");
-
-  if (forwardedHost && origin && forwardedHost !== origin) {
-    return new NextResponse("Header mismatch", { status: 400 });
-  }
 
   const {
     data: { user },

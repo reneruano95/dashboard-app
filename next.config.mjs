@@ -1,31 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  crossOrigin: "anonymous",
-  poweredByHeader: false,
-  headers: async () => {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Cross-Origin-Embedder-Policy",
-            value: "require-corp",
-          },
-          {
-            key: "Cross-Origin-Opener-Policy",
-            value: "same-origin",
-          },
-        ],
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/:path*",
-        destination: "/:path*",
-      },
-    ];
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "localhost:3000",
+        "shiny-parakeet-9gvpjvp6x9xfxx96-3000.app.github.dev",
+      ],
+    },
   },
 };
 
