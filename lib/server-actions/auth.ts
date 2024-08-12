@@ -56,12 +56,21 @@ export const signInWithEmail = async ({ email, password }: SignInValues) => {
     });
 
     if (error) {
-      throw error;
+      return {
+        data: null,
+        error: parseStringify(error) as AuthError,
+      };
     }
 
-    return parseStringify(data.user) as User;
+    return {
+      data: parseStringify(data.user) as User,
+      error: null,
+    };
   } catch (error) {
-    throw error;
+    return {
+      data: null,
+      error: parseStringify(error) as AuthError,
+    };
   }
 };
 

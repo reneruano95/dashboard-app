@@ -35,13 +35,16 @@ export const SignInForm = () => {
 
   const onSubmit = async (values: SignInValues) => {
     const { email, password } = values;
-    const user = await signInWithEmail({ email, password });
+    const { data, error } = await signInWithEmail({ email, password });
 
-    if (!user) {
-      return toast.error("Failed to sign in. Please try again.");
+    if (error) {
+      return toast.error("Failed to sign in. Please try again.", {
+        description: JSON.stringify(error, null, 2),
+        descriptionClassName: "text-xs whitespace-pre-line",
+      });
     }
 
-    if (user) {
+    if (data) {
       toast.success("Signed in successfully.", {
         description: "We'll never share your email with anyone else.",
       });
