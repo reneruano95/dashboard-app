@@ -2,11 +2,11 @@
 
 import { AuthError, User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import { createServerClient } from "../supabase/server";
-import { SignInValues } from "../types";
+import { SignIn } from "../types";
 import { parseStringify } from "../utils";
-import { revalidatePath } from "next/cache";
 
 // export const signUpWithEmail = async ({ email, password }: SignInValues) => {
 //   const supabase = createServerClient();
@@ -46,7 +46,7 @@ import { revalidatePath } from "next/cache";
 //   }
 // };
 
-export const signInWithEmail = async ({ email, password }: SignInValues) => {
+export const signInWithEmail = async ({ email, password }: SignIn) => {
   const supabase = createServerClient();
 
   try {
