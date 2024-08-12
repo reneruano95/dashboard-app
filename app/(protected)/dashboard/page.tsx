@@ -6,7 +6,7 @@ import {
 import { useGetUser } from "@/lib/hooks/useGetUser";
 import { createServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { getUserDetails } from "@/lib/server-actions/users";
+import { getUserDetails } from "@/lib/actions/users";
 
 export default async function DashboardPage() {
   const queryClient = new QueryClient();

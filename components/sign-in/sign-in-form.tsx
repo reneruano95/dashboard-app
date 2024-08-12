@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 
 import { SignIn, SignInSchema } from "@/lib/types";
-import { signInWithEmail } from "@/lib/server-actions/auth";
+import { signInWithEmail } from "@/lib/actions/auth";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
 
