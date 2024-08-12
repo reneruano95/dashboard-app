@@ -17,15 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { SignInValues } from "@/lib/types";
-import { SignInSchema } from "@/lib/types/sign-in-schema";
+import { SignIn, SignInSchema } from "@/lib/types";
 import { signInWithEmail } from "@/lib/server-actions/auth";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
 
 export const SignInForm = () => {
   const router = useRouter();
-  const form = useForm<SignInValues>({
+  const form = useForm<SignIn>({
     defaultValues: {
       email: "",
       password: "",
@@ -33,7 +32,7 @@ export const SignInForm = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-  const onSubmit = async (values: SignInValues) => {
+  const onSubmit = async (values: SignIn) => {
     const { email, password } = values;
     const { data, error } = await signInWithEmail({ email, password });
 
