@@ -11,8 +11,8 @@ export type Database = {
     Tables: {
       agencies: {
         Row: {
-          agency_address: Json | null
-          agency_email: string | null
+          agency_adress: Json | null
+          agency_email: string
           agency_logo_url: string | null
           agency_name: string
           agency_status: string
@@ -21,8 +21,8 @@ export type Database = {
           id: string
         }
         Insert: {
-          agency_address?: Json | null
-          agency_email?: string | null
+          agency_adress?: Json | null
+          agency_email?: string
           agency_logo_url?: string | null
           agency_name?: string
           agency_status?: string
@@ -31,8 +31,8 @@ export type Database = {
           id?: string
         }
         Update: {
-          agency_address?: Json | null
-          agency_email?: string | null
+          agency_adress?: Json | null
+          agency_email?: string
           agency_logo_url?: string | null
           agency_name?: string
           agency_status?: string
@@ -45,35 +45,35 @@ export type Database = {
       users: {
         Row: {
           agency_id: string | null
+          agency_role: Database["public"]["Enums"]["role"] | null
           avatar_url: string | null
-          email: string
+          email: string | null
           full_name: string | null
           id: string
-          role: Database["public"]["Enums"]["role"] | null
-          status: string
-          updated_at: string | null
+          status: string | null
+          updated_at: string
           username: string | null
         }
         Insert: {
           agency_id?: string | null
+          agency_role?: Database["public"]["Enums"]["role"] | null
           avatar_url?: string | null
-          email?: string
+          email?: string | null
           full_name?: string | null
           id: string
-          role?: Database["public"]["Enums"]["role"] | null
-          status?: string
-          updated_at?: string | null
+          status?: string | null
+          updated_at?: string
           username?: string | null
         }
         Update: {
           agency_id?: string | null
+          agency_role?: Database["public"]["Enums"]["role"] | null
           avatar_url?: string | null
-          email?: string
+          email?: string | null
           full_name?: string | null
           id?: string
-          role?: Database["public"]["Enums"]["role"] | null
-          status?: string
-          updated_at?: string | null
+          status?: string | null
+          updated_at?: string
           username?: string | null
         }
         Relationships: [
@@ -101,7 +101,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      role: "AGENCY_OWNER" | "AGENCY_USER" | "ADMIN"
+      role: "ADMIN" | "AGENCY_OWNER" | "AGENCY_USER"
     }
     CompositeTypes: {
       [_ in never]: never
