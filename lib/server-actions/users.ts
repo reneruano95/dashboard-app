@@ -7,10 +7,13 @@ export const getUserDetails = async (userId: string) => {
 
   const { data, error } = await supabase
     .from("users")
-    .select()
+    .select("*")
     .eq("id", userId)
     .throwOnError()
+    .limit(1)
     .single();
+
+  // console.log(data);
 
   if (error) throw error;
 
