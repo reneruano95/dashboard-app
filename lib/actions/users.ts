@@ -1,5 +1,3 @@
-"use server";
-
 import { createServerClient } from "../supabase/server";
 
 export const getUserDetails = async (userId: string) => {
