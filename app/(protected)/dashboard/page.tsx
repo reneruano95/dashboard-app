@@ -24,6 +24,7 @@ export default async function DashboardPage() {
   const userDetails = await queryClient.fetchQuery({
     queryKey: ["user", user.id],
     queryFn: () => getUserDetails(user.id),
+    
   });
 
   if (!userDetails) {
