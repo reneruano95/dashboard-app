@@ -1,8 +1,14 @@
-import { createServerClient } from "../supabase/server";
+"use server";
 
-export const getUserDetails = async (userId: string) => {
-  const supabase = createServerClient();
+import { TypedSupabaseClient } from "../types";
 
+export const getUser = async ({
+  userId,
+  supabase,
+}: {
+  userId: string;
+  supabase: TypedSupabaseClient;
+}) => {
   const { data, error } = await supabase
     .from("users")
     .select("*")
