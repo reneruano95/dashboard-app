@@ -82,7 +82,7 @@ export const SignInForm = () => {
                 <FormMessage className="text-xs" />
                 {!form.formState.errors.email && (
                   <FormDescription className="text-xs">
-                    We'll never share your email with anyone else.
+                    We`&apos;`ll never share your email with anyone else.
                   </FormDescription>
                 )}
               </FormItem>
