@@ -3,5 +3,5 @@ export default function DashboarLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="min-h-screen">{children}</main>;
+  return <main className="min-h-screen flex">{children}</main>;
 }
