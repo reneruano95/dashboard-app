@@ -17,7 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { SignIn, SignInSchema } from "@/lib/types";
+import { SignIn } from "@/lib/types";
+import { SignInSchema } from "@/lib/types/validations";
 import { signInWithEmail } from "@/lib/actions/auth";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";

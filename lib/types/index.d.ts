@@ -1,6 +1,7 @@
 import { Database, Tables } from "./database.types";
+import { SignInSchema } from "./validations";
 
-export { SignInSchema, SignIn } from "./validations";
-export type AgencyUser = Tables<"users">;
-export type Agency = Tables<"agencies">;
-export type AgencyRole = Database["public"]["Enums"]["role"];
+declare type SignIn = z.infer<typeof SignInSchema>;
+declare type AgencyUser = Tables<"users">;
+declare type Agency = Tables<"agencies">;
+declare type AgencyRole = Database["public"]["Enums"]["role"];
