@@ -2,8 +2,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
 import { createServerClient } from "@/lib/supabase/server";
-import { getUser } from "@/lib/actions/users";
-import { AgencyUser } from "@/lib/types";
+import { getAgencyByUser } from "@/lib/actions/agencies";
+import { Agency } from "@/lib/types";
 
 export default async function DashboardPage() {
   const queryClient = new QueryClient();
@@ -18,19 +18,19 @@ export default async function DashboardPage() {
     return redirect("/sign-in");
   }
 
-  let userDetails: AgencyUser | null = null;
+  let agency: Agency | null = null;
   try {
-    userDetails = await queryClient.fetchQuery({
+    agency = await queryClient.fetchQuery({
       queryKey: ["user", user.id],
       queryFn: () =>
-        getUser({
+        getAgencyByUser({
           userId: user.id,
           supabase,
         }),
     });
 
-    if (!userDetails) {
-      throw new Error("User not found");
+    if (!agency) {
+      throw new Error("Agency not found");
     }
   } catch (error) {
     let errorMessage = "An unknown error occurred.";
@@ -51,5 +51,5 @@ export default async function DashboardPage() {
     );
   }
 
-  return redirect(`/dashboard/${userDetails.agency_id}`);
+  return redirect(`/dashboard/${agency.agency_domain}`);
 }

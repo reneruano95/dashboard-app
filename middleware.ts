@@ -17,15 +17,28 @@ export async function middleware(request: NextRequest) {
     error,
   } = await supabase.auth.getUser();
 
-  if (isPrivateRoute(request.nextUrl.pathname)) {
+  const url = request.nextUrl;
+  let hostname = request.headers;
+
+  const customDomain = hostname
+    .get("host")
+    ?.split(`${process.env.NEXT_PUBLIC_DOMAIN}`)
+    .filter(Boolean)[0];
+
+  // if (customDomain) {
+  //   console.log(customDomain);
+  //   // return NextResponse.rewrite(new URL(`/${customDomain}`, request.url));
+  // }
+
+  if (isPrivateRoute(url.pathname)) {
     if (error || !user) {
-      return NextResponse.redirect(new URL("/sign-in", request.nextUrl));
+      return NextResponse.redirect(new URL("/sign-in", url));
     }
   }
 
-  if (isPublicRoute(request.nextUrl.pathname)) {
+  if (isPublicRoute(url.pathname)) {
     if (user) {
-      return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
+      return NextResponse.redirect(new URL("/dashboard", url));
     }
   }
 
