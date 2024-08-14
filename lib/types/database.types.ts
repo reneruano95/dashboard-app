@@ -11,37 +11,37 @@ export type Database = {
     Tables: {
       agencies: {
         Row: {
-          agency_adress: Json | null
-          agency_domain: string
-          agency_email: string
-          agency_logo_url: string
-          agency_name: string
-          agency_status: string
-          agency_website: string
+          adress: Json | null
           created_at: string
+          custom_domain: string
+          email: string
           id: string
+          logo_url: string
+          name: string
+          status: string
+          website_url: string
         }
         Insert: {
-          agency_adress?: Json | null
-          agency_domain?: string
-          agency_email?: string
-          agency_logo_url?: string
-          agency_name?: string
-          agency_status?: string
-          agency_website?: string
+          adress?: Json | null
           created_at?: string
+          custom_domain?: string
+          email?: string
           id?: string
+          logo_url?: string
+          name?: string
+          status?: string
+          website_url?: string
         }
         Update: {
-          agency_adress?: Json | null
-          agency_domain?: string
-          agency_email?: string
-          agency_logo_url?: string
-          agency_name?: string
-          agency_status?: string
-          agency_website?: string
+          adress?: Json | null
           created_at?: string
+          custom_domain?: string
+          email?: string
           id?: string
+          logo_url?: string
+          name?: string
+          status?: string
+          website_url?: string
         }
         Relationships: []
       }
