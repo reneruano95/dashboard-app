@@ -26,8 +26,11 @@ export async function middleware(request: NextRequest) {
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
 
+  const customPath = path.split("/").filter((p) => p !== "");
+  console.log("customPath:", customPath);
+
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
-  if (hostname.get("host")!.includes("localhost")) {
+  if (hostname.get("host")!.includes(`${process.env.NEXT_PUBLIC_DOMAIN}`)) {
     const customHostname = hostname
       .get("host")!
       .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
