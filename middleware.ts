@@ -19,27 +19,23 @@ export async function middleware(request: NextRequest) {
 
   const url = request.nextUrl;
   let hostname = request.headers;
-
   const searchParams = url.searchParams.toString();
+
   // Get the pathname of the request (e.g. /, /about, /blog/first-post)
   const path = `${url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
+  console.log("path:", path);
 
-  const customPath = path.split("/").filter((p) => p !== "");
-  console.log("customPath:", customPath);
+  const pathArray = path.split("/").filter((p) => p !== "");
+  console.log("pathArray:", pathArray);
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
-  if (hostname.get("host")!.includes(`${process.env.NEXT_PUBLIC_DOMAIN}`)) {
-    let customHostname;
+  let customHostname = hostname
+    .get("host")!
+    .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_CUSTOM_DOMAIN}`);
 
-    customHostname = hostname
-      .get("host")!
-      .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
-
-    console.log("customHostname:", customHostname);
-    console.log("path:", path);
-  }
+  console.log("customHostname:", customHostname);
 
   if (isPrivateRoute(url.pathname)) {
     if (error || !user) {
