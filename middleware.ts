@@ -31,26 +31,26 @@ export async function middleware(request: NextRequest) {
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   if (hostname.get("host")!.includes(`${process.env.NEXT_PUBLIC_DOMAIN}`)) {
-    const customHostname = hostname
+    let customHostname;
+
+    customHostname = hostname
       .get("host")!
       .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
     console.log("customHostname:", customHostname);
-    console.log('path:', path);
+    console.log("path:", path);
+  }
 
-    if (isPrivateRoute(url.pathname)) {
-      if (error || !user) {
-        return NextResponse.redirect(new URL("/sign-in", url));
-      }
+  if (isPrivateRoute(url.pathname)) {
+    if (error || !user) {
+      return NextResponse.redirect(new URL("/sign-in", url));
     }
+  }
 
-    if (isPublicRoute(url.pathname)) {
-      if (user) {
-        return NextResponse.redirect(new URL("/dashboard", url));
-      }
+  if (isPublicRoute(url.pathname)) {
+    if (user) {
+      return NextResponse.redirect(new URL("/dashboard", url));
     }
-
-    return response;
   }
 
   return response;
