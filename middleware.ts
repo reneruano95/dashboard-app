@@ -20,26 +20,34 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   let hostname = request.headers;
 
-  const customDomain = hostname
-    .get("host")
-    ?.split(`${process.env.NEXT_PUBLIC_DOMAIN}`)
-    .filter(Boolean)[0];
+  const searchParams = url.searchParams.toString();
+  // Get the pathname of the request (e.g. /, /about, /blog/first-post)
+  const path = `${url.pathname}${
+    searchParams.length > 0 ? `?${searchParams}` : ""
+  }`;
 
-  // if (customDomain) {
-  //   console.log(customDomain);
-  //   // return NextResponse.rewrite(new URL(`/${customDomain}`, request.url));
-  // }
+  // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
+  if (hostname.get("host")!.includes("localhost")) {
+    const customHostname = hostname
+      .get("host")!
+      .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
-  if (isPrivateRoute(url.pathname)) {
-    if (error || !user) {
-      return NextResponse.redirect(new URL("/sign-in", url));
+    console.log("customHostname:", customHostname);
+    console.log('path:', path);
+
+    if (isPrivateRoute(url.pathname)) {
+      if (error || !user) {
+        return NextResponse.redirect(new URL("/sign-in", url));
+      }
     }
-  }
 
-  if (isPublicRoute(url.pathname)) {
-    if (user) {
-      return NextResponse.redirect(new URL("/dashboard", url));
+    if (isPublicRoute(url.pathname)) {
+      if (user) {
+        return NextResponse.redirect(new URL("/dashboard", url));
+      }
     }
+
+    return response;
   }
 
   return response;
