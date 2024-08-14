@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/global/mode-toggle";
 import { SignOutButton } from "@/components/global/sign-out-button";
 
 export default function AgencyPage({
@@ -13,6 +14,7 @@ export default function AgencyPage({
       <p className="text-center text-lg text-foreground/80">
         You are now signed in.
       </p>
+      <ModeToggle />
       <SignOutButton />
     </div>
   );
