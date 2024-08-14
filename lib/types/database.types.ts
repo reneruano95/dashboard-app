@@ -12,31 +12,34 @@ export type Database = {
       agencies: {
         Row: {
           agency_adress: Json | null
+          agency_domain: string
           agency_email: string
-          agency_logo_url: string | null
+          agency_logo_url: string
           agency_name: string
           agency_status: string
-          agency_website: string | null
+          agency_website: string
           created_at: string
           id: string
         }
         Insert: {
           agency_adress?: Json | null
+          agency_domain?: string
           agency_email?: string
-          agency_logo_url?: string | null
+          agency_logo_url?: string
           agency_name?: string
           agency_status?: string
-          agency_website?: string | null
+          agency_website?: string
           created_at?: string
           id?: string
         }
         Update: {
           agency_adress?: Json | null
+          agency_domain?: string
           agency_email?: string
-          agency_logo_url?: string | null
+          agency_logo_url?: string
           agency_name?: string
           agency_status?: string
-          agency_website?: string | null
+          agency_website?: string
           created_at?: string
           id?: string
         }

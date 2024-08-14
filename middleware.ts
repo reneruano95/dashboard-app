@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "./lib/supabase/middleware";
 
 // Add public routes here
-const publicRoutes = ["/", "/sign-in", "/sign-up"];
+const publicRoutes = ["/sign-in", "/sign-up"];
 const isPublicRoute = (path: string) => publicRoutes.includes(path);
 
 // Add private routes here
