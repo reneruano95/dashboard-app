@@ -1,10 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserDetails } from "../queries/users";
+import { getUser } from "../queries/users";
+import { createBrowserClient } from "../supabase/client";
 
 export function useGetUser(id: string) {
   return useQuery({
     queryKey: ["user", id],
-    queryFn: async () => await getUserDetails(id),
+    queryFn: async () =>
+      await getUser({
+        userId: id,
+        supabase: createBrowserClient(),
+      }),
     //The query will not execute until the userId exists
     enabled: !!id,
   });
