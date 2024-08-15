@@ -1,8 +1,6 @@
-"use server";
-
 import { TypedSupabaseClient } from "../types";
 
-export const getUser = async ({
+export const getAgencyByUser = async ({
   userId,
   supabase,
 }: {
@@ -11,7 +9,7 @@ export const getUser = async ({
 }) => {
   const { data, error } = await supabase
     .from("users")
-    .select("*")
+    .select("agencies!inner(*)")
     .eq("id", userId)
     .throwOnError()
     .limit(1)
@@ -21,7 +19,7 @@ export const getUser = async ({
 
   if (error) throw error;
 
-  if (!data) throw new Error("User not found");
+  if (!data.agencies) throw new Error("Agency not found");
 
-  return data;
+  return data.agencies;
 };
