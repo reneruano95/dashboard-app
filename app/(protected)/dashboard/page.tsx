@@ -51,5 +51,5 @@ export default async function DashboardPage() {
     );
   }
 
-  return redirect(`/dashboard/${agency.agency_domain}`);
+  return redirect(`/dashboard/${agency.id}`);
 }

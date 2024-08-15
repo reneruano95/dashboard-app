@@ -30,13 +30,6 @@ export async function middleware(request: NextRequest) {
   const pathArray = path.split("/").filter((p) => p !== "");
   console.log("pathArray:", pathArray);
 
-  // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
-  let customHostname = hostname
-    .get("host")!
-    .replace("localhost:3000", `.${process.env.NEXT_PUBLIC_CUSTOM_DOMAIN}`);
-
-  console.log("customHostname:", customHostname);
-
   if (isPrivateRoute(url.pathname)) {
     if (error || !user) {
       return NextResponse.redirect(new URL("/sign-in", url));
