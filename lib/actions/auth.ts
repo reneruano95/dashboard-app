@@ -1,7 +1,6 @@
 "use server";
 
 import { AuthError, User } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import { createServerClient } from "../supabase/server";
@@ -81,20 +80,16 @@ export const signOut = async () => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
+      console.error("Error signing out:", error.message);
       return {
         error: parseStringify(error) as AuthError,
       };
     }
 
-    return {
-      error: null,
-    };
+    revalidatePath("/dashboard");
   } catch (error) {
     return {
       error: parseStringify(error) as AuthError,
     };
-  } finally {
-    revalidatePath("/sign-in");
-    redirect("/sign-in");
   }
 };

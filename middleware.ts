@@ -7,7 +7,9 @@ const isPublicRoute = (path: string) => publicRoutes.includes(path);
 
 // Add private routes here
 const privateRoutes = ["/dashboard"];
-const isPrivateRoute = (path: string) => privateRoutes.includes(path);
+const isPrivateRoute = (path: string) => {
+  return privateRoutes.some((route) => path.startsWith(route));
+};
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);

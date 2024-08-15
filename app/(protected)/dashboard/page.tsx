@@ -21,7 +21,7 @@ export default async function DashboardPage() {
   let agency: Agency | null = null;
   try {
     agency = await queryClient.fetchQuery({
-      queryKey: ["user", user.id],
+      queryKey: ["agency"],
       queryFn: () =>
         getAgencyByUser({
           userId: user.id,
@@ -32,6 +32,8 @@ export default async function DashboardPage() {
     if (!agency) {
       throw new Error("Agency not found");
     }
+
+    queryClient.setQueryData(["agency", agency.id], agency);
   } catch (error) {
     let errorMessage = "An unknown error occurred.";
     if (error instanceof Error) {
