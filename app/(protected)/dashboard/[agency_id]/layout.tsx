@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/sidebar/sidebar";
-import { QueryClient } from "@tanstack/react-query";
+import { getQueryClient } from "@/lib/providers/get-query-client";
 
 export default function AgencyLayout({
   children,
@@ -8,6 +8,8 @@ export default function AgencyLayout({
   children: React.ReactNode;
   params: { agency_id: string };
 }) {
+  const queryClient = getQueryClient();
+
   return (
     <>
       <Sidebar />

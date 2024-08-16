@@ -1,12 +1,12 @@
-import { QueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
 import { createServerClient } from "@/lib/supabase/server";
+import { getQueryClient } from "@/lib/providers/get-query-client";
 import { getAgencyByUser } from "@/lib/queries/agencies";
 import { Agency } from "@/lib/types";
 
 export default async function DashboardPage() {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
   const supabase = createServerClient();
 
   const {
