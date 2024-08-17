@@ -13,34 +13,34 @@ export type Database = {
         Row: {
           adress: Json | null
           created_at: string
-          custom_domain: string
           email: string
           id: string
           logo_url: string
           name: string
           status: string
+          subdomain: string
           website_url: string
         }
         Insert: {
           adress?: Json | null
           created_at?: string
-          custom_domain?: string
           email?: string
           id?: string
           logo_url?: string
           name?: string
           status?: string
+          subdomain?: string
           website_url?: string
         }
         Update: {
           adress?: Json | null
           created_at?: string
-          custom_domain?: string
           email?: string
           id?: string
           logo_url?: string
           name?: string
           status?: string
+          subdomain?: string
           website_url?: string
         }
         Relationships: []
