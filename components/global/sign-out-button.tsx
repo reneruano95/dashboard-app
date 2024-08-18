@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
-import { useAuthLogout } from "@/lib/hooks/useAuthLogout";
+import { useAuth } from "@/lib/hooks/useAuth";
 
 export const SignOutButton = () => {
   const router = useRouter();
 
-  const logout = useAuthLogout();
+  const { logout } = useAuth();
 
   const handleSignOut = async () => {
     await logout.refetch();

@@ -1,20 +1,14 @@
-import { AuthTokenResponsePassword, UserResponse } from "@supabase/supabase-js";
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { createBrowserClient } from "../supabase/client";
 import { SignIn } from "../types";
 
 export const useAuth = () => {
+  const supabase = createBrowserClient();
+
   const user = useQuery({
     queryKey: ["user", "session"],
     queryFn: async () => {
-      const supabase = createBrowserClient();
-
       const { data, error } = await supabase.auth.getUser();
 
       if (error || !data.user) {
@@ -32,8 +26,6 @@ export const useAuth = () => {
 
   const signIn = useMutation({
     mutationFn: async ({ email, password }: SignIn) => {
-      const supabase = createBrowserClient();
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -43,16 +35,34 @@ export const useAuth = () => {
         throw error as Error;
       }
 
-      return data;
+      return data.user;
     },
     mutationKey: ["user", "sign-in"],
     onError: (error) => {
       console.error("Error signing in:", error);
     },
     onSuccess: (data) => {
-      console.log("Signed in:", data.user.email);
+      console.log("Signed in:", data.email);
     },
   });
 
-  return { user, signIn };
+  const logout = useQuery({
+    queryKey: ["session", "logout"],
+    queryFn: async () => {
+      const locData = await supabase.auth.signOut({ scope: "local" });
+
+      await user.refetch();
+
+      if (locData.error) {
+        throw new Error(locData.error.message);
+      }
+
+      return locData;
+    },
+    enabled: false,
+    staleTime: 0,
+    initialData: null,
+  });
+
+  return { user, signIn, logout };
 };
