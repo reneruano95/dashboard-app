@@ -22,8 +22,8 @@ export default async function DashboardPage() {
   try {
     agency = await queryClient.fetchQuery({
       queryKey: ["agency"],
-      queryFn: () =>
-        getAgencyByUser({
+      queryFn: async () =>
+        await getAgencyByUser({
           userId: user.id,
           supabase,
         }),
