@@ -32,6 +32,11 @@ export const Sidebar = () => {
                   Dashboard
                 </Link>
               </li>
+
+              <li className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 hover:cursor-pointer">
+                <Icon name="Settings" className="w-5 h-5" />
+                Settings
+              </li>
             </ul>
           </nav>
         </div>
