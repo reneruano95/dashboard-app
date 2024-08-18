@@ -19,12 +19,14 @@ import {
 
 import { SignIn } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/validations";
-import { signInWithEmail } from "@/lib/actions/auth";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/hooks/useAuth";
 
 export const SignInForm = () => {
   const router = useRouter();
+  const { signIn } = useAuth();
+
   const form = useForm<SignIn>({
     defaultValues: {
       email: "",
@@ -35,21 +37,17 @@ export const SignInForm = () => {
 
   const onSubmit = async (values: SignIn) => {
     const { email, password } = values;
-    const { data, error } = await signInWithEmail({ email, password });
 
-    if (error) {
-      return toast.error("Failed to sign in. Please try again.", {
-        description: JSON.stringify(error, null, 2),
-        descriptionClassName: "text-xs whitespace-pre-line",
-      });
-    }
-
-    if (data) {
-      toast.success("Signed in successfully.", {
-        description: "We'll never share your email with anyone else.",
-      });
-      router.push(`/dashboard/`);
-    }
+    toast.promise(signIn.mutateAsync({ email, password }), {
+      loading: "Signing in...",
+      success: () => {
+        router.push(`/dashboard/`);
+        return "Signed in successfully.";
+      },
+      error: (error) => {
+        return `Failed to sign in. ${error.message}`;
+      },
+    });
   };
 
   return (
