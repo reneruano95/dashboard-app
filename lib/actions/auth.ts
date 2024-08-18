@@ -1,7 +1,6 @@
 "use server";
 
 import { AuthError, User } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
 
 import { createServerClient } from "../supabase/server";
 import { SignIn } from "../types";
@@ -85,8 +84,6 @@ export const signOut = async () => {
         error: parseStringify(error) as AuthError,
       };
     }
-
-    revalidatePath("/dashboard");
   } catch (error) {
     return {
       error: parseStringify(error) as AuthError,

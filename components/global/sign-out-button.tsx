@@ -10,8 +10,9 @@ export const SignOutButton = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    router.push("/sign-in");
+    router.push("http://app.localhost:3000");
   };
+
   return (
     <Button
       variant={"secondary"}

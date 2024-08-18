@@ -7,7 +7,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 
 export const Sidebar = () => {
   return (
-    <aside className="hidden w-64 bg-white border-r border-gray-200 md:block dark:bg-background dark:border-neutral-700">
+    <aside className="hidden h-full w-64 bg-white border-r border-gray-200 md:block dark:bg-background dark:border-neutral-700">
       <div className="relative flex flex-col h-full max-h-full">
         <div className=" px-6 mx-3 mt-3 dark:bg-white rounded-lg">
           <AspectRatio ratio={16 / 5}>
