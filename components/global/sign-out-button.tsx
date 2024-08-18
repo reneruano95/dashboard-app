@@ -2,14 +2,16 @@
 
 import { useRouter } from "next/navigation";
 
-import { signOut } from "@/lib/actions/auth";
 import { Button } from "../ui/button";
+import { useAuthLogout } from "@/lib/hooks/useAuthLogout";
 
 export const SignOutButton = () => {
   const router = useRouter();
 
+  const logout = useAuthLogout();
+
   const handleSignOut = async () => {
-    await signOut();
+    await logout.refetch();
     router.push("http://app.localhost:3000");
   };
 

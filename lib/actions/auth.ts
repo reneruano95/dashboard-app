@@ -71,22 +71,3 @@ export const signInWithEmail = async ({ email, password }: SignIn) => {
     };
   }
 };
-
-export const signOut = async () => {
-  const supabase = createServerClient();
-
-  try {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      console.error("Error signing out:", error.message);
-      return {
-        error: parseStringify(error) as AuthError,
-      };
-    }
-  } catch (error) {
-    return {
-      error: parseStringify(error) as AuthError,
-    };
-  }
-};
