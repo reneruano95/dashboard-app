@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { ThemeProvider } from "@/lib/providers/theme-provider";
-import { ReactQueryClientProvider } from "@/lib/providers/react-query-client-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ReactQueryClientProvider } from "@/components/providers/react-query-client-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
         >
           <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
           <Toaster richColors duration={3000} />
+          <ModalProvider />
         </ThemeProvider>
       </body>
     </html>

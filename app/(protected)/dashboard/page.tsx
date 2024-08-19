@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { createServerClient } from "@/lib/supabase/server";
-import { getQueryClient } from "@/lib/providers/get-query-client";
+import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "@/lib/queries/agencies";
 import { Agency } from "@/lib/types";
 

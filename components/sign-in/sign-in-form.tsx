@@ -21,7 +21,7 @@ import { SignIn } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/validations";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 export const SignInForm = () => {
   const router = useRouter();

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { DefinedUseQueryResult } from "@tanstack/react-query";
 import type { AuthError } from "@supabase/supabase-js";
-import { useAuthUser } from "./useAuthUser";
+import { useAuthUser } from "./use-auth-user";
 import { createBrowserClient } from "../supabase/client";
 
 export const useAuthLogout: () => DefinedUseQueryResult<

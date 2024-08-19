@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 export const SignOutButton = () => {
   const router = useRouter();
