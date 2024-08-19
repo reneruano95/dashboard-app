@@ -8,9 +8,11 @@ import { useMediaQuery } from "usehooks-ts";
 import { Icon } from "../global/icon";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useDialog } from "@/lib/hooks/use-dialog";
 
 export const Sidebar = () => {
   const pathname = usePathname();
+  const dialog = useDialog();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -95,7 +97,10 @@ export const Sidebar = () => {
             <Icon name="Inbox" className="w-5 h-5" />
             <span>Inbox</span>
           </li>
-          <li className="group/native flex items-center gap-2 transition-all cursor-pointer text-muted-foreground py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-sm">
+          <li
+            onClick={dialog.onOpen}
+            className="group/native flex items-center gap-2 transition-all cursor-pointer text-muted-foreground py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-sm"
+          >
             <Icon name="Settings" className="w-5 h-5" />
             <span>Settings</span>
           </li>
