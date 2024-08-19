@@ -9,6 +9,7 @@ export default function AgencyLayout({
     <>
       <main className="flex items-center justify-center h-screen">
         <Sidebar />
+
         {children}
       </main>
     </>
