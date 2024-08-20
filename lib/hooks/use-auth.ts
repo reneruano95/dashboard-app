@@ -2,9 +2,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { createBrowserClient } from "../supabase/client";
 import { SignIn } from "../types";
+import { getQueryClient } from "@/components/providers/get-query-client";
 
 export const useAuth = () => {
   const supabase = createBrowserClient();
+  const queryClient = getQueryClient();
 
   const user = useQuery({
     queryKey: ["user", "session"],
@@ -37,12 +39,13 @@ export const useAuth = () => {
 
       return data.user;
     },
-    mutationKey: ["user", "sign-in"],
+    mutationKey: ["user", "session"],
     onError: (error) => {
       console.error("Error signing in:", error);
     },
     onSuccess: (data) => {
-      console.log("Signed in:", data.email);
+      queryClient.setQueryData(["user", "session"], data);
+      user.refetch();
     },
   });
 
