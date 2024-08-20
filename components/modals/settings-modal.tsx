@@ -10,24 +10,36 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { useDialog } from "@/lib/hooks/use-dialog";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Icon } from "../global/icon";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { SettingsSidebar } from "../settings/settings-sidebar";
+import { useDialog } from "@/lib/hooks/use-dialog";
 
 export const SettingsModal = () => {
   const dialog = useDialog();
   return (
     <Dialog open={dialog.isOpen} onOpenChange={dialog.onClose}>
       <DialogContent className="p-0 max-w-5xl">
-        <div className="flex h-[600px] w-full max-w-6xl mx-auto border rounded-lg overflow-hidden">
+        <div className="flex h-[600px] w-full max-w-7xl mx-auto border rounded-lg overflow-hidden">
           <SettingsSidebar />
 
           <main className="flex-1 bg-background">
             <ScrollArea className="h-full p-6">
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Domain</h2>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold">
+                    Domain settings
+                  </DialogTitle>
+                  <DialogDescription>
+                    Manage your workspace domain and export settings.
+                  </DialogDescription>
+                </DialogHeader>
+
                 <div className="space-y-2">
                   <Label htmlFor="domain">www.notion.so/</Label>
                   <div className="flex items-center space-x-2">
