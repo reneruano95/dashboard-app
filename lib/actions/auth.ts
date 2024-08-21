@@ -3,46 +3,38 @@
 import { AuthError, User } from "@supabase/supabase-js";
 
 import { createServerClient } from "../supabase/server";
-import { SignIn } from "../types";
+import { AgencyUser, SignIn } from "../types";
 import { parseStringify } from "../utils";
+import { createAdminAuthClient } from "../supabase/admin";
 
-// export const signUpWithEmail = async ({ email, password }: SignInValues) => {
-//   const supabase = createServerClient();
+export const createUser = async ({ email, password }: SignIn) => {
+  const supabase = createAdminAuthClient();
 
-//   const newUser: Partial<Tables<"users">> = {
-//     username: email.split("@")[0],
-//     full_name: "John Doe",
-//     avatar_url: "https://api.dicebear.com/9.x/pixel-art/svg",
-//     role: null,
-//   };
+  const newUser: Partial<AgencyUser> = {
+    username: email.split("@")[0],
+    full_name: "Rene Ruano",
+    avatar_url: "https://api.dicebear.com/9.x/pixel-art/svg",
+    role: "ADMIN",
+    status: "ACTIVE",
+  };
 
-//   try {
-//     const { error } = await supabase.auth.signUp({
-//       email,
-//       password,
-//       options: {
-//         data: {
-//           ...newUser,
-//           app_name: "dashboard-app",
-//         },
-//       },
-//     });
-
-//     if (error) {
-//       return {
-//         error: parseStringify(error) as AuthError,
-//       };
-//     }
-
-//     return {
-//       error: null,
-//     };
-//   } catch (error) {
-//     return {
-//       error: parseStringify(error) as AuthError,
-//     };
-//   }
-// };
+  try {
+    supabase.auth.admin
+      .createUser({
+        email,
+        password,
+        user_metadata: {
+          ...newUser,
+          app_name: "dashboard-app",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const signInWithEmail = async ({ email, password }: SignIn) => {
   const supabase = createServerClient();

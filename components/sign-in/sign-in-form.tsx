@@ -22,6 +22,7 @@ import { SignInSchema } from "@/lib/types/validations";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/hooks/use-auth";
+import { createUser } from "@/lib/actions/auth";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -130,6 +131,18 @@ export const SignInForm = () => {
           </Button>
         </form>
       </Form>
+
+      <Button
+        className="relative w-full"
+        onClick={async () => {
+          await createUser({
+            email: "reneruano@gmail.com",
+            password: "123456",
+          });
+        }}
+      >
+        Sign up
+      </Button>
 
       <SignInWithProviders />
     </>
