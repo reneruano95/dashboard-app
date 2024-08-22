@@ -2,8 +2,8 @@
 
 import { MenuIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { ElementRef, useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
+import { ElementRef, useCallback, useEffect, useRef, useState } from "react";
+import { useIsMounted, useMediaQuery } from "usehooks-ts";
 
 import { Icon } from "../global/icon";
 import { cn } from "@/lib/utils";
@@ -14,9 +14,11 @@ export const Sidebar = () => {
   const pathname = usePathname();
   const dialog = useDialog();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMounted = useIsMounted();
 
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
+
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
@@ -26,15 +28,21 @@ export const Sidebar = () => {
     } else {
       resetWidth();
     }
+
+    return () => {
+      setIsResetting(false);
+      setIsCollapsed(false);
+    };
   }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) {
+      setIsCollapsed(true);
       collapse();
     }
   }, [pathname, isMobile]);
 
-  const resetWidth = () => {
+  const resetWidth = useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
       setIsResetting(true);
@@ -45,11 +53,12 @@ export const Sidebar = () => {
         isMobile ? "0" : "calc(100% - 224px)"
       );
       navbarRef.current.style.setProperty("left", isMobile ? "100%" : "224px");
+
       setTimeout(() => setIsResetting(false), 300);
     }
-  };
+  }, [isMobile]);
 
-  const collapse = () => {
+  const collapse = useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
       setIsResetting(true);
@@ -57,18 +66,18 @@ export const Sidebar = () => {
       sidebarRef.current.style.width = "0";
       navbarRef.current.style.setProperty("width", "100%");
       navbarRef.current.style.setProperty("left", "0");
+
       setTimeout(() => setIsResetting(false), 300);
     }
-  };
+  }, [isMobile]);
 
   return (
     <>
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-56 flex-col",
-          isResetting && "transition-all ease-in-out duration-300",
-          isMobile && "w-0"
+          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-0 md:w-56 flex-col",
+          isResetting && "transition-all ease-in-out duration-300"
         )}
       >
         <div className="w-full relative h-12 flex items-center bg-neutral-200  dark:bg-neutral-700">
@@ -76,8 +85,7 @@ export const Sidebar = () => {
             onClick={collapse}
             role="button"
             className={cn(
-              "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
-              isMobile && "opacity-100"
+              "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-100 md:opacity-0 group-hover/sidebar:opacity-100 transition "
             )}
           >
             <Icon name="ChevronsLeft" className="h-6 w-6" />
@@ -99,6 +107,7 @@ export const Sidebar = () => {
           </li>
           <li
             onClick={dialog.onOpen}
+            role="button"
             className="group/native flex items-center gap-2 transition-all cursor-pointer text-muted-foreground py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-sm"
           >
             <Icon name="Settings" className="w-5 h-5" />
@@ -173,23 +182,26 @@ export const Sidebar = () => {
           </nav>
         </div>
 
-        <div className="opacity-0 group-hover/sidebar:opacity-100 transition absolute h-full w-1 bg-primary/10 right-0 top-0" />
+        <div
+          onClick={collapse}
+          className="opacity-0 group-hover/sidebar:opacity-100 transition absolute h-full w-1 bg-primary/10 right-0 top-0"
+        />
       </aside>
 
       <div
         ref={navbarRef}
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-224px)]",
+          "absolute top-0 left-0 md:left-56 w-full md:w-[calc(100%-224px)] h-12",
           isResetting && "transition-all ease-in-out duration-300",
-          isMobile && "left-0 w-full"
+          "flex items-center"
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
+        <nav className="bg-transparent px-3 py-2 w-full flex justify-between">
+          {isCollapsed && isMounted() && (
             <MenuIcon
               onClick={resetWidth}
               role="button"
-              className="h-6 w-6 text-muted-foreground"
+              className={cn("h-6 w-6 text-muted-foreground")}
             />
           )}
         </nav>
