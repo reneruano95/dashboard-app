@@ -1,10 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 import { createBrowserClient } from "../supabase/client";
 import { SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
+import { getAgencyByUser } from "../queries/agencies";
 
 export const useAuth = () => {
+  const router = useRouter();
   const supabase = createBrowserClient();
   const queryClient = getQueryClient();
 
@@ -43,9 +46,28 @@ export const useAuth = () => {
     onError: (error) => {
       console.error("Error signing in:", error);
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(["user", "session"], data);
       user.refetch();
+
+      const agency = await queryClient.fetchQuery({
+        queryKey: ["agency"],
+        queryFn: async () =>
+          await getAgencyByUser({
+            userId: data.id,
+            supabase,
+          }),
+      });
+
+      queryClient.setQueryData(["agency", agency.id], agency);
+
+      if (!agency) {
+        throw new Error("Agency not found");
+      }
+
+      if (agency.id) {
+        return router.replace(`/${agency.id}`);
+      }
     },
   });
 

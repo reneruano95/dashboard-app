@@ -42,7 +42,6 @@ export const SignInForm = () => {
     toast.promise(signIn.mutateAsync({ email, password }), {
       loading: "Signing in...",
       success: () => {
-        router.push(`/dashboard/`);
         return "Signed in successfully.";
       },
       error: (error) => {
