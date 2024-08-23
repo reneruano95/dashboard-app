@@ -14,7 +14,6 @@ export const createUser = async ({ email, password }: SignIn) => {
     username: email.split("@")[0],
     full_name: "Rene Ruano",
     avatar_url: "https://api.dicebear.com/9.x/pixel-art/svg",
-    role: "ADMIN",
     status: "ACTIVE",
   };
 

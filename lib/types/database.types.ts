@@ -45,6 +45,50 @@ export type Database = {
         }
         Relationships: []
       }
+      role_permissions: {
+        Row: {
+          id: string
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          id?: string
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          id?: string
+          permission?: Database["public"]["Enums"]["app_permission"]
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           agency_id: string | null
@@ -52,7 +96,6 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
-          role: Database["public"]["Enums"]["role"]
           status: string | null
           updated_at: string
           username: string | null
@@ -63,7 +106,6 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id: string
-          role?: Database["public"]["Enums"]["role"]
           status?: string | null
           updated_at?: string
           username?: string | null
@@ -74,7 +116,6 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
-          role?: Database["public"]["Enums"]["role"]
           status?: string | null
           updated_at?: string
           username?: string | null
@@ -104,7 +145,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      role: "ADMIN" | "AGENCY_OWNER" | "AGENCY_USER"
+      app_permission:
+        | "agencies.delete"
+        | "agencies.update"
+        | "agencies.read"
+        | "agencies.create"
+        | "users.delete"
+        | "users.update"
+        | "users.read"
+        | "users.create"
+      app_role: "admin" | "agency_owner" | "agency_user"
     }
     CompositeTypes: {
       [_ in never]: never

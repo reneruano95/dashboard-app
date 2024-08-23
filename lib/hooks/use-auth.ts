@@ -43,9 +43,11 @@ export const useAuth = () => {
       return data.user;
     },
     mutationKey: ["user", "session"],
+
     onError: (error) => {
       console.error("Error signing in:", error);
     },
+
     onSuccess: async (data) => {
       queryClient.setQueryData(["user", "session"], data);
       user.refetch();
