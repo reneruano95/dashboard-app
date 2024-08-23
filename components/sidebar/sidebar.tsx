@@ -28,16 +28,10 @@ export const Sidebar = () => {
     } else {
       resetWidth();
     }
-
-    return () => {
-      setIsResetting(false);
-      setIsCollapsed(false);
-    };
   }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) {
-      setIsCollapsed(true);
       collapse();
     }
   }, [pathname, isMobile]);
