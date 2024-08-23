@@ -22,6 +22,7 @@ export const createUser = async ({ email, password }: SignIn) => {
       .createUser({
         email,
         password,
+        email_confirm: true,
         user_metadata: {
           ...newUser,
           app_name: "dashboard-app",

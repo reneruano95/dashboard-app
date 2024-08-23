@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 import { createBrowserClient } from "../supabase/client";
-import { SignIn } from "../types";
+import { Role, SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../queries/agencies";
 
@@ -12,7 +13,7 @@ export const useAuth = () => {
   const queryClient = getQueryClient();
 
   const user = useQuery({
-    queryKey: ["user", "session"],
+    queryKey: ["user"],
     queryFn: async () => {
       const { data, error } = await supabase.auth.getUser();
 
@@ -40,7 +41,7 @@ export const useAuth = () => {
         throw error as Error;
       }
 
-      return data.user;
+      return data;
     },
     mutationKey: ["user", "session"],
 
@@ -52,29 +53,44 @@ export const useAuth = () => {
       queryClient.setQueryData(["user", "session"], data);
       user.refetch();
 
-      const agency = await queryClient.fetchQuery({
-        queryKey: ["agency"],
-        queryFn: async () =>
-          await getAgencyByUser({
-            userId: data.id,
-            supabase,
-          }),
-      });
+      const session = data.session;
+      if (session) {
+        const jwt = jwtDecode(session.access_token);
 
-      queryClient.setQueryData(["agency", agency.id], agency);
+        // @ts-ignore
+        const userRole: Role = jwt.user_role;
+        console.log("User role:", userRole);
 
-      if (!agency) {
-        throw new Error("Agency not found");
-      }
+        if (userRole === "admin") {
+          return router.replace("/dashboard");
+        }
 
-      if (agency.id) {
-        return router.replace(`/${agency.id}`);
+        if (userRole === "agency_user" || userRole === "agency_owner") {
+          const agency = await queryClient.fetchQuery({
+            queryKey: ["agency"],
+            queryFn: async () =>
+              await getAgencyByUser({
+                userId: data.user.id,
+                supabase,
+              }),
+          });
+
+          queryClient.setQueryData(["agency", agency.id], agency);
+
+          if (!agency) {
+            throw new Error("Agency not found");
+          }
+
+          if (agency.id) {
+            return router.replace(`/${agency.id}`);
+          }
+        }
       }
     },
   });
 
   const logout = useQuery({
-    queryKey: ["session", "logout"],
+    queryKey: ["session", "logout", "user"],
     queryFn: async () => {
       const locData = await supabase.auth.signOut({ scope: "local" });
 

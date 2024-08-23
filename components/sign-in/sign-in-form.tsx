@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -25,7 +24,6 @@ import { useAuth } from "@/lib/hooks/use-auth";
 import { createUser } from "@/lib/actions/auth";
 
 export const SignInForm = () => {
-  const router = useRouter();
   const { signIn } = useAuth();
 
   const form = useForm<SignIn>({
@@ -121,17 +119,11 @@ export const SignInForm = () => {
 
           <Button type="submit" className="relative w-full">
             Sign in
-            {/* {lastSignedInMethod === "email" && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full whitespace-nowrap ml-8 bg-accent px-4 py-1 rounded-md text-xs text-foreground/80">
-                  <div className="absolute -left-5 top-0 border-background border-[12px] border-r-accent" />
-                  Last used
-                </div>
-              )} */}
           </Button>
         </form>
       </Form>
 
-      <Button
+      {/* <Button
         className="relative w-full"
         onClick={async () => {
           await createUser({
@@ -141,7 +133,7 @@ export const SignInForm = () => {
         }}
       >
         Sign up
-      </Button>
+      </Button> */}
 
       <SignInWithProviders />
     </>
