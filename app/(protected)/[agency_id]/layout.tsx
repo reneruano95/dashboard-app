@@ -7,9 +7,9 @@ export default function AgencyLayout({
 }) {
   return (
     <>
-      <main className="flex items-center justify-center h-full ">
+      <main className="flex items-center justify-center h-full">
         <Sidebar />
-        <div className="flex-1 h-full overflow-y-auto pt-[40px]">
+        <div className="flex-1 h-full overflow-y-auto pt-[48px]">
           {children}
         </div>
       </main>

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { createServerClient } from "@/lib/supabase/server";
+import { Sidebar } from "@/components/sidebar/sidebar";
 
 export default async function DashboardLayout({
   children,
@@ -18,5 +19,10 @@ export default async function DashboardLayout({
     return redirect("/sign-in");
   }
 
-  return <main className="min-h-screen flex">{children}</main>;
+  return (
+    <main className="flex items-center justify-center h-full">
+      <Sidebar />
+      <div className="flex-1 h-full overflow-y-auto pt-[48px]">{children}</div>
+    </main>
+  );
 }
