@@ -1,13 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtDecode } from "jwt-decode";
+
 import { updateSession } from "./lib/supabase/middleware";
+import { getAgencyByUser } from "./lib/queries/agencies";
+import { Role } from "./lib/types";
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
 
   const {
     data: { user },
-    error,
+    error: userError,
   } = await supabase.auth.getUser();
+
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
   const url = request.nextUrl;
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
@@ -29,8 +38,37 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (user && path == "/sign-in") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+    if (session) {
+      const jwt = jwtDecode(session.access_token);
+
+      // @ts-ignore
+      const userRole: Role = jwt.user_role;
+      console.log("User role:", userRole);
+
+      if (userRole === "admin") {
+        if (!path.startsWith("/dashboard")) {
+          return NextResponse.redirect(new URL("/dashboard", request.url));
+        }
+      }
+
+      if (userRole === "agency_owner" || userRole === "agency_user") {
+        const { id: agencyId } = await getAgencyByUser({
+          userId: user?.id!,
+          supabase,
+        });
+
+        if (path === "/sign-in") {
+          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
+        }
+
+        if (path === "/dashboard") {
+          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
+        }
+
+        if (!path.startsWith(`/${agencyId}`)) {
+          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
+        }
+      }
     }
   }
 
