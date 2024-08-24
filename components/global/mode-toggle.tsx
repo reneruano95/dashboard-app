@@ -10,13 +10,12 @@ export function ModeToggle() {
 
   return (
     <Button
-      variant="secondary"
-      size="icon"
+      variant="ghost"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="rounded-full p-2"
+      className="rounded-full p-0 hover:bg-transparent h-fit"
     >
-      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <Sun className="h-6 w-6 text-muted-foreground rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-6 w-6 text-muted-foreground rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
     </Button>
   );
 }
