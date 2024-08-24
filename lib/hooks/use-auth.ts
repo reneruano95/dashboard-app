@@ -6,6 +6,7 @@ import { createBrowserClient } from "../supabase/client";
 import { Role, SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../queries/agencies";
+import { toast } from "sonner";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -19,12 +20,14 @@ export const useAuth = () => {
 
       if (error || !data.user) {
         console.error("User not found. Signing out.");
+
         await supabase.auth.signOut({
           scope: "local",
         });
+        throw new Error("User not found");
       }
 
-      return data;
+      return data.user;
     },
     enabled: false,
     staleTime: 0,
@@ -89,22 +92,25 @@ export const useAuth = () => {
     },
   });
 
-  const logout = useQuery({
-    queryKey: ["session", "logout", "user"],
-    queryFn: async () => {
-      const locData = await supabase.auth.signOut({ scope: "local" });
+  const logout = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.auth.signOut({ scope: "local" });
 
       await user.refetch();
 
-      if (locData.error) {
-        throw new Error(locData.error.message);
+      if (error) {
+        throw new Error(error.message);
       }
-
-      return locData;
     },
-    enabled: false,
-    staleTime: 0,
-    initialData: null,
+    mutationKey: ["session", "logout", "user"],
+    onError: (error) => {
+      console.error("Error logging out:", error);
+    },
+    onSuccess: () => {
+      queryClient.clear();
+      toast.success("You have been signed out");
+      router.replace("/sign-in");
+    },
   });
 
   const userRole = useQuery({
@@ -126,7 +132,7 @@ export const useAuth = () => {
 
       // @ts-ignore
       const userRole: Role = jwt.user_role;
-      console.log("User role:", userRole);
+      // console.log("User role:", userRole);
 
       return userRole;
     },

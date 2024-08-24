@@ -11,7 +11,7 @@ export const SignOutButton = () => {
   const { logout } = useAuth();
 
   const handleSignOut = async () => {
-    await logout.refetch();
+    await logout.mutateAsync();
     router.push("http://app.localhost:3000");
   };
 

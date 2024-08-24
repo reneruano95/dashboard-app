@@ -9,7 +9,7 @@ export default async function DashboardPage() {
         Welcome to the admin dashboard! This is where you can manage all the
         agencies and users in your organization.
       </p>
-      <ModeToggle />
+
       <SignOutButton />
     </div>
   );

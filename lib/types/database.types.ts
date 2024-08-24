@@ -92,33 +92,33 @@ export type Database = {
       users: {
         Row: {
           agency_id: string | null
-          avatar_url: string | null
-          email: string | null
-          full_name: string | null
+          avatar_url: string
+          email: string
+          full_name: string
           id: string
-          status: string | null
+          status: string
           updated_at: string
-          username: string | null
+          username: string
         }
         Insert: {
           agency_id?: string | null
-          avatar_url?: string | null
-          email?: string | null
-          full_name?: string | null
+          avatar_url?: string
+          email?: string
+          full_name?: string
           id: string
-          status?: string | null
+          status?: string
           updated_at?: string
-          username?: string | null
+          username?: string
         }
         Update: {
           agency_id?: string | null
-          avatar_url?: string | null
-          email?: string | null
-          full_name?: string | null
+          avatar_url?: string
+          email?: string
+          full_name?: string
           id?: string
-          status?: string | null
+          status?: string
           updated_at?: string
-          username?: string | null
+          username?: string
         }
         Relationships: [
           {

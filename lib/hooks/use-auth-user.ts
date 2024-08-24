@@ -3,24 +3,21 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { createBrowserClient } from "../supabase/client";
 
-export const useAuthUser: () => UseQueryResult<
-  UserResponse | null,
-  Error
-> = () => {
-  const user = useQuery<UserResponse>({
-    queryKey: ["user", "session"],
+export const useAuthUser = () => {
+  const user = useQuery({
+    queryKey: ["user"],
     queryFn: async () => {
       const supabase = createBrowserClient();
 
-      const response = await supabase.auth.getUser();
+      const { data, error } = await supabase.auth.getUser();
 
-      if (response.error || !response.data.user) {
+      if (error || !data.user) {
         await supabase.auth.signOut({
           scope: "local",
         });
       }
 
-      return response;
+      return data.user;
     },
     enabled: false,
     staleTime: 0,
