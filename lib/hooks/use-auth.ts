@@ -107,5 +107,32 @@ export const useAuth = () => {
     initialData: null,
   });
 
-  return { user, signIn, logout };
+  const userRole = useQuery({
+    queryKey: ["user", "role"],
+    queryFn: async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (!session) {
+        throw new Error("Session not found");
+      }
+      const jwt = jwtDecode(session?.access_token);
+
+      // @ts-ignore
+      const userRole: Role = jwt.user_role;
+      console.log("User role:", userRole);
+
+      return userRole;
+    },
+    enabled: false,
+    staleTime: 0,
+  });
+
+  return { user, signIn, logout, userRole };
 };
