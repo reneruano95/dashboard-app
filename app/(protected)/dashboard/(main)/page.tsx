@@ -1,6 +1,3 @@
-import { ModeToggle } from "@/components/global/mode-toggle";
-import { SignOutButton } from "@/components/global/sign-out-button";
-
 export default async function DashboardPage() {
   return (
     <div className="flex flex-col justify-center items-center h-full p-4">
@@ -9,8 +6,6 @@ export default async function DashboardPage() {
         Welcome to the admin dashboard! This is where you can manage all the
         agencies and users in your organization.
       </p>
-
-      <SignOutButton />
     </div>
   );
 }

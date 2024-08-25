@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { Icon } from "../global/icon";
 import { ModeToggle } from "../global/mode-toggle";
 import { UserAvatar } from "./user-avatar";
-import { useAuth } from "@/lib/hooks/use-auth";
 
 interface NavbarProps {
   isCollapsed: boolean;
