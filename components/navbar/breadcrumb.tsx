@@ -24,7 +24,7 @@ export default function Breadcrumb() {
         };
       }) || []
     );
-  }, [pathname]);
+  }, [path, pathname]);
 
   return (
     <nav aria-label="breadcrumb" className="flex items-center">
@@ -40,7 +40,7 @@ export default function Breadcrumb() {
           >
             <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
             {index < breadcrumbs.length - 1 ? (
-              <span className="mx-2 inline-block">/</span>
+              <span className="mx-1 inline-block">/</span>
             ) : null}
           </li>
         ))}

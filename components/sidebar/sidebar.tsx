@@ -76,7 +76,6 @@ export const Sidebar = () => {
           "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-0 md:w-56 flex-col",
           isResetting && "transition-all ease-in-out duration-300"
         )}
-        aria-expanded={!isCollapsed}
         aria-controls="navbar"
       >
         <div className="w-full relative h-12 flex items-center bg-neutral-200  dark:bg-neutral-700">

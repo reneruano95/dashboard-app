@@ -92,7 +92,7 @@ export async function middleware(request: NextRequest) {
           const matchedPage = appsPages.find((page) => {
             return path.startsWith(`/${agencyId}${page}`);
           });
-          console.log("Matched page for path:", path, "is:", matchedPage);
+          // console.log("Matched page for path:", path, "is:", matchedPage);
 
           return NextResponse.rewrite(new URL(`${matchedPage}`, request.url));
         }
