@@ -13,14 +13,14 @@ export default function Breadcrumb() {
 
   const breadcrumbs = useMemo(() => {
     return (
-      path?.map((path, index) => {
+      path?.map((p, i) => {
         const href = pathname;
-        const label = path.charAt(0).toUpperCase() + path.slice(1);
+        const label = p.charAt(0).toUpperCase() + p.slice(1);
 
         return {
           href,
           label,
-          active: index === pathname.length - 1,
+          active: i === path.length - 1,
         };
       }) || []
     );
