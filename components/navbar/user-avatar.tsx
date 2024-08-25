@@ -25,11 +25,13 @@ export const UserAvatar = () => {
     return await logout.mutateAsync();
   };
 
-  queryClient.refetchQueries({
-    queryKey: ["user"],
-    type: "inactive",
-    exact: true,
-  });
+  if (!user) {
+    queryClient.refetchQueries({
+      queryKey: ["user"],
+      type: "inactive",
+      exact: true,
+    });
+  }
 
   const userId = user?.id!;
   const { data: userFromDb, error, isLoading, isFetching } = useGetUser(userId);
@@ -72,11 +74,11 @@ export const UserAvatar = () => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="hover:cursor-pointer"
-            role="button"
+            className="hover:cursor-pointer hover:text-destructive"
             onClick={handleSignOut}
+            role="button"
           >
-            <div className="hover:text-destructive w-full flex items-center justify-start">
+            <div className="w-full flex items-center justify-start">
               <Icon name="LogOut" className="mr-2 h-4 w-4" />
               <span>Sign Out</span>
             </div>
