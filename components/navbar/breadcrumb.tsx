@@ -5,7 +5,10 @@ import { cn } from "@/lib/utils";
 
 export default function Breadcrumb() {
   const path = usePathname();
-  const pathname = path?.split("/").filter((path) => path !== "");
+  const pathname = path
+    ?.split("/")
+    .filter((path) => path !== "")
+    .slice(1);
 
   const breadcrumbs = pathname.map((path, index) => {
     const href = `/${pathname.slice(0, index + 1).join("/")}`;
@@ -32,7 +35,7 @@ export default function Breadcrumb() {
           >
             <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
             {index < breadcrumbs.length - 1 ? (
-              <span className="mx-3 inline-block">/</span>
+              <span className="mx-2 inline-block">/</span>
             ) : null}
           </li>
         ))}
