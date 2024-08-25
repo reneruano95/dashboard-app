@@ -20,7 +20,7 @@ export const SidebarPagesItems = () => {
 
   if (isLoading || isFetching) {
     return (
-      <div className="px-2 mt-2 h-48">
+      <div className="px-2 mt-2 h-48" aria-busy="true">
         <Skeleton className="w-full h-full rounded-sm bg-neutral-300 dark:bg-neutral-600" />
       </div>
     );

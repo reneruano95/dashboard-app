@@ -1,25 +1,30 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
 export default function Breadcrumb() {
-  const path = usePathname();
-  const pathname = path
+  const pathname = usePathname();
+  const path = pathname
     ?.split("/")
     .filter((path) => path !== "")
     .slice(1);
 
-  const breadcrumbs = pathname.map((path, index) => {
-    const href = `/${pathname.slice(0, index + 1).join("/")}`;
-    const label = path.charAt(0).toUpperCase() + path.slice(1);
+  const breadcrumbs = useMemo(() => {
+    return (
+      path?.map((path, index) => {
+        const href = pathname;
+        const label = path.charAt(0).toUpperCase() + path.slice(1);
 
-    return {
-      href,
-      label: label,
-      active: index === pathname.length - 1,
-    };
-  });
+        return {
+          href,
+          label,
+          active: index === pathname.length - 1,
+        };
+      }) || []
+    );
+  }, [pathname]);
 
   return (
     <nav aria-label="breadcrumb" className="flex items-center">
@@ -27,7 +32,7 @@ export default function Breadcrumb() {
         {breadcrumbs.map((breadcrumb, index) => (
           <li
             key={breadcrumb.href}
-            aria-current={breadcrumb.active}
+            aria-current={breadcrumb.active ? "page" : undefined}
             className={cn(
               breadcrumb.active ? "text-primary" : "text-neutral-300",
               "hover:text-gray-600 dark:hover:text-neutral-300"
