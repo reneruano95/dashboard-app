@@ -64,7 +64,7 @@ export const useAuth = () => {
 
         // @ts-ignore
         const userRole: Role = jwt.user_role;
-        console.log("User role:", userRole);
+        // console.log("User role:", userRole);
 
         if (userRole === "admin") {
           return router.replace("/dashboard");

@@ -11,6 +11,7 @@ import { UserAvatar } from "./user-avatar";
 import Breadcrumb from "./breadcrumb";
 
 interface NavbarProps {
+  id: string;
   isCollapsed: boolean;
   isResetting: boolean;
   resetWidth: () => void;
@@ -18,6 +19,7 @@ interface NavbarProps {
 }
 
 export const Navbar = ({
+  id,
   isCollapsed,
   isResetting,
   resetWidth,
@@ -36,6 +38,7 @@ export const Navbar = ({
         isCollapsed && isMobile && "bg-secondary",
         !isCollapsed && isMobile && "hidden"
       )}
+      id={id}
     >
       <nav className="bg-transparent px-3 py-2 w-full flex items-center justify-between gap-2">
         {isCollapsed && isMounted() && (

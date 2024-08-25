@@ -5,32 +5,46 @@ import { updateSession } from "./lib/supabase/middleware";
 import { getAgencyByUser } from "./lib/queries/agencies";
 import { Role } from "./lib/types";
 
+const appsPages = [
+  "/apps/to-dos",
+  "/apps/kanban",
+  "/apps/calendar",
+  "/apps/automation",
+];
+
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
 
-  const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
+  if (userError) {
+    console.error("Error fetching user:", userError);
+    return NextResponse.redirect(new URL("/error", request.url));
+  }
+  const user = userData?.user;
+
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionError) {
+    console.error("Error fetching session:", sessionError);
+    return NextResponse.redirect(new URL("/error", request.url));
+  }
+  const session = sessionData?.session;
 
   const url = request.nextUrl;
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   let hostname = request.headers
     .get("host")!
     .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
-  console.log("hostname:", hostname);
+  // console.log("hostname:", hostname);
 
   const searchParams = url.searchParams.toString();
   // Get the pathname of the request (e.g. /, /about, /blog/first-post)
   const path = `${url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
-  console.log("path:", path);
+  // console.log("path:", path);
 
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
@@ -43,11 +57,20 @@ export async function middleware(request: NextRequest) {
 
       // @ts-ignore
       const userRole: Role = jwt.user_role;
-      console.log("User role:", userRole);
+      // console.log("User role:", userRole);
 
       if (userRole === "admin") {
         if (!path.startsWith("/dashboard")) {
           return NextResponse.redirect(new URL("/dashboard", request.url));
+        }
+
+        if (path.startsWith("/dashboard/apps")) {
+          const matchedPage = appsPages.find((page) => {
+            return path.startsWith(`/dashboard${page}`);
+          });
+          // console.log("Matched page for path:", path, "is:", matchedPage);
+
+          return NextResponse.rewrite(new URL(`${matchedPage}`, request.url));
         }
       }
 
@@ -57,16 +80,21 @@ export async function middleware(request: NextRequest) {
           supabase,
         });
 
-        if (path === "/sign-in") {
-          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
-        }
-
-        if (path === "/dashboard") {
+        if (path === "/sign-in" || path === "/dashboard") {
           return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
         }
 
         if (!path.startsWith(`/${agencyId}`)) {
           return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
+        }
+
+        if (path.startsWith(`/${agencyId}/apps`)) {
+          const matchedPage = appsPages.find((page) => {
+            return path.startsWith(`/${agencyId}${page}`);
+          });
+          console.log("Matched page for path:", path, "is:", matchedPage);
+
+          return NextResponse.rewrite(new URL(`${matchedPage}`, request.url));
         }
       }
     }

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { usePathname } from "next/navigation";
 
 import { Icon } from "../global/icon";
 import { Button } from "../ui/button";
@@ -9,14 +8,15 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/hooks/use-auth";
 import { Skeleton } from "../ui/skeleton";
 
-export const SidebarPagesItems = () => {
-  const pathname = usePathname();
+interface PagesItemsProps {
+  pathname: string;
+  mainPath: string;
+}
 
+export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
   const {
     userRole: { data: role, isLoading, isFetching },
   } = useAuth();
-
-  const path = pathname.split("/")[1];
 
   if (isLoading || isFetching) {
     return (
@@ -35,7 +35,7 @@ export const SidebarPagesItems = () => {
               {label}
             </h3>
             {children.map(({ title, icon, href, roles }) => {
-              const isActive = pathname === `/${path}${href}`;
+              const isActive = pathname === `/${mainPath}${href}`;
               const hasAccess = roles.includes(role!);
 
               if (!hasAccess) return null;
@@ -51,7 +51,7 @@ export const SidebarPagesItems = () => {
                   asChild
                 >
                   <Link
-                    href={`/${path}${href}`}
+                    href={`/${mainPath}${href}`}
                     className={cn(
                       "flex items-center",
                       isActive && "bg-neutral-300 dark:bg-neutral-600"

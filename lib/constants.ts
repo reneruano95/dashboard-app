@@ -1,4 +1,4 @@
-import { SidebarPages } from "./types";
+import { SidebarApps, SidebarPages } from "./types";
 
 export const sidebarPages: SidebarPages[] = [
   {
@@ -39,6 +39,34 @@ export const sidebarPages: SidebarPages[] = [
         icon: "Users",
         href: "/users",
         roles: ["admin"],
+      },
+    ],
+  },
+];
+
+export const sidebarApps: SidebarApps[] = [
+  {
+    label: "Apps",
+    children: [
+      {
+        title: "To-dos",
+        icon: "ListTodo",
+        href: "/apps/to-dos",
+      },
+      {
+        title: "KanBan",
+        icon: "Kanban",
+        href: "/apps/kanban",
+      },
+      {
+        title: "Automation",
+        icon: "Workflow",
+        href: "/apps/automation",
+      },
+      {
+        title: "Calendar",
+        icon: "Calendar",
+        href: "/apps/calendar",
       },
     ],
   },

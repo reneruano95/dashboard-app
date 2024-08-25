@@ -31,7 +31,7 @@ export default function Breadcrumb() {
       <ol className={cn("flex items-center text-lg")}>
         {breadcrumbs.map((breadcrumb, index) => (
           <li
-            key={breadcrumb.href}
+            key={breadcrumb.label}
             aria-current={breadcrumb.active ? "page" : undefined}
             className={cn(
               breadcrumb.active ? "text-primary" : "text-neutral-300",
