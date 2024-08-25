@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 
@@ -10,6 +10,8 @@ import { getAgencyByUser } from "../queries/agencies";
 
 export const useAuth = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const supabase = createBrowserClient();
   const queryClient = getQueryClient();
 
@@ -112,30 +114,26 @@ export const useAuth = () => {
   });
 
   const userRole = useQuery({
-    queryKey: ["user", "role"],
+    queryKey: ["role"],
     queryFn: async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
+      const { data, error } = await supabase.auth.getSession();
 
       if (error) {
         throw new Error(error.message);
       }
 
-      if (!session) {
+      if (!data.session) {
         throw new Error("Session not found");
       }
-      const jwt = jwtDecode(session?.access_token);
+
+      const jwt = jwtDecode(data.session.access_token);
 
       // @ts-ignore
       const userRole: Role = jwt.user_role;
-      // console.log("User role:", userRole);
 
       return userRole;
     },
-    enabled: false,
-    staleTime: 0,
+    enabled: pathname !== "/sign-in",
   });
 
   return { user, signIn, logout, userRole };
