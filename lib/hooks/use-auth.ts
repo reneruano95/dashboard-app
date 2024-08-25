@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
 import { createBrowserClient } from "../supabase/client";
 import { Role, SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../queries/agencies";
-import { toast } from "sonner";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -95,8 +95,6 @@ export const useAuth = () => {
   const logout = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.auth.signOut({ scope: "local" });
-
-      await user.refetch();
 
       if (error) {
         throw new Error(error.message);
