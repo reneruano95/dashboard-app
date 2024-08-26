@@ -29,6 +29,9 @@ export default function Breadcrumb() {
   return (
     <nav aria-label="breadcrumb" className="flex items-center">
       <ol className={cn("flex items-center text-lg")}>
+        {breadcrumbs.length === 0 ? (
+          <li className="text-primary">Home</li>
+        ) : null}
         {breadcrumbs.map((breadcrumb, index) => (
           <li
             key={breadcrumb.label}

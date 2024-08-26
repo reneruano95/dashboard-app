@@ -98,7 +98,11 @@ export const Sidebar = () => {
           <li className="group/native ">
             <Link
               href={mainPath === "dashboard" ? "/" : `/${mainPath}`}
-              className="flex items-center gap-2 transition-all cursor-pointer text-muted-foreground py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-sm"
+              className={cn(
+                "flex items-center gap-2 transition-all cursor-pointer text-muted-foreground py-1 px-2 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-sm",
+                pathname === `/${mainPath}` &&
+                  "bg-neutral-300 dark:bg-neutral-600"
+              )}
             >
               <Icon name="House" className="w-5 h-5" />
               <span>Home</span>
