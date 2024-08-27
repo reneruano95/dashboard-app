@@ -16,20 +16,10 @@ export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
 
   const { data: userData, error: userError } = await supabase.auth.getUser();
-
-  if (userError) {
-    console.error("Error fetching user:", userError);
-    return NextResponse.redirect(new URL("/error", request.url));
-  }
   const user = userData?.user;
 
   const { data: sessionData, error: sessionError } =
     await supabase.auth.getSession();
-
-  if (sessionError) {
-    console.error("Error fetching session:", sessionError);
-    return NextResponse.redirect(new URL("/error", request.url));
-  }
   const session = sessionData?.session;
 
   const url = request.nextUrl;
