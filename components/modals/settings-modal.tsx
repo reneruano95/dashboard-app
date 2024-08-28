@@ -1,15 +1,6 @@
-import { InfoIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "../ui/separator";
 import {
   Dialog,
   DialogContent,
@@ -28,70 +19,44 @@ export const SettingsModal = () => {
         <div className="flex h-[600px] w-full max-w-7xl mx-auto border rounded-lg overflow-hidden">
           <SettingsSidebar />
 
-          <main className="flex-1 bg-background">
-            <ScrollArea className="h-full p-6">
-              <div className="space-y-6">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold">
-                    Domain settings
-                  </DialogTitle>
-                  <DialogDescription>
-                    Manage your workspace domain and export settings.
-                  </DialogDescription>
-                </DialogHeader>
+          <main className="flex-1 bg-background p-6">
+            <div className="space-y-6">
+              <DialogHeader className="">
+                <DialogTitle className="text-lg font-bold">
+                  My Profile
+                </DialogTitle>
+                <DialogDescription>
+                  Update your profile information.
+                </DialogDescription>
+                <Separator className="mt-2" />
+              </DialogHeader>
 
-                <div className="space-y-2">
-                  <Label htmlFor="domain">www.notion.so/</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input id="domain" placeholder="acmeincorporated" />
-                    <Button>Change</Button>
-                  </div>
-                </div>
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle>Allowed email domains</CardTitle>
-                    <CardDescription>
-                      Anyone with email addresses at these domains can
-                      automatically join your workspace.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center space-x-2">
-                      <div className="bg-muted text-muted-foreground px-2 py-1 rounded-md flex items-center">
-                        makenotion.com
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 ml-2 text-muted-foreground"
-                        >
-                          <XIcon className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      <Input
-                        placeholder="Add another domain"
-                        className="flex-1"
-                      />
+              <div className="flex flex-col">
+                <div className="flex gap-2 items-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="size-[60px] rounded-full bg-neutral-600 flex items-center justify-center text-xl text-primary-foreground">
+                      R
                     </div>
-                  </CardContent>
-                </Card>
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Export content</h3>
-                  <Button>Export all workspace content</Button>
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <InfoIcon className="h-4 w-4" />
-                    <span>Learn about exporting workspaces.</span>
+                  </div>
+
+                  <div className="ml-4 w-64">
+                    <label
+                      htmlFor="preferred-name"
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Preferred name
+                    </label>
+                    <Input
+                      id="preferred-name"
+                      defaultValue="Rene Ruano"
+                      className="max-w-md text-sm py-1 px-2 h-fit"
+                    />
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Export members</h3>
-                  <Button variant="outline">Export members as CSV</Button>
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <Button variant="outline">Cancel</Button>
-                  <Button>Update</Button>
-                </div>
+
+                <div className="h-fit mt-2 text-sm">Add photo</div>
               </div>
-            </ScrollArea>
+            </div>
           </main>
         </div>
       </DialogContent>
