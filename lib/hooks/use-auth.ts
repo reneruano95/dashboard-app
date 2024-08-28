@@ -33,6 +33,7 @@ export const useAuth = () => {
     },
     enabled: false,
     staleTime: 0,
+    refetchOnMount: false,
   });
 
   const signIn = useMutation({
@@ -48,14 +49,13 @@ export const useAuth = () => {
 
       return data;
     },
-    mutationKey: ["user", "session"],
-
+    mutationKey: ["signIn"],
     onError: (error) => {
       console.error("Error signing in:", error);
     },
 
     onSuccess: async (data) => {
-      queryClient.setQueryData(["user", "session"], data);
+      queryClient.setQueryData(["user"], data.user);
       user.refetch();
 
       const session = data.session;
@@ -102,7 +102,6 @@ export const useAuth = () => {
         throw new Error(error.message);
       }
     },
-    mutationKey: ["session", "logout", "user"],
     onError: (error) => {
       console.error("Error logging out:", error);
     },
@@ -134,6 +133,7 @@ export const useAuth = () => {
       return userRole;
     },
     enabled: pathname !== "/sign-in",
+    refetchOnMount: false,
   });
 
   return { user, signIn, logout, userRole };
