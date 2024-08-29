@@ -7,7 +7,7 @@ import { MenuIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "../global/icon";
 import { ModeToggle } from "../global/mode-toggle";
-import { UserAvatar } from "./user-avatar";
+import { DropdownAvatarMenu } from "./dropdown-avatar-menu";
 import Breadcrumb from "./breadcrumb";
 
 interface NavbarProps {
@@ -53,7 +53,7 @@ export const Navbar = ({
           <div className="flex items-center gap-x-2">
             <Icon name="Bell" className="h-6 w-6 text-muted-foreground" />
             <ModeToggle />
-            <UserAvatar />
+            <DropdownAvatarMenu />
           </div>
         </div>
       </nav>

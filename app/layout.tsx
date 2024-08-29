@@ -29,9 +29,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
-          <Toaster richColors duration={3000} />
-          <ModalProvider />
+          <ReactQueryClientProvider>
+            {children}
+            <Toaster richColors duration={3000} />
+            <ModalProvider />
+          </ReactQueryClientProvider>
         </ThemeProvider>
       </body>
     </html>

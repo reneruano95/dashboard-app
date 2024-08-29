@@ -14,7 +14,7 @@ import { useGetUser } from "@/lib/hooks/use-get-user";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { Icon } from "@/components/global/icon";
 
-export const UserAvatar = () => {
+export const DropdownAvatarMenu = () => {
   const queryClient = getQueryClient();
   const {
     user: { data: user },

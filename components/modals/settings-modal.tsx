@@ -10,20 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import { SettingsSidebar } from "../settings/settings-sidebar";
 import { useDialog } from "@/lib/hooks/use-dialog";
+import { Switch } from "../ui/switch";
+import { Icon } from "../global/icon";
 
 export const SettingsModal = () => {
   const dialog = useDialog();
   return (
     <Dialog open={dialog.isOpen} onOpenChange={dialog.onClose}>
-      <DialogContent className="p-0 max-w-5xl">
-        <div className="flex h-[600px] w-full max-w-7xl mx-auto border rounded-lg overflow-hidden">
+      <DialogContent className="p-0 max-w-5xl h-full md:h-[650px]">
+        <div className="flex w-full mx-auto border rounded-lg overflow-hidden">
           <SettingsSidebar />
 
-          <main className="flex-1 bg-background p-6">
+          <main className="flex-1 bg-background p-6 flex flex-col justify-center">
             <div className="space-y-6">
-              <DialogHeader className="">
+              <DialogHeader className="text-left">
                 <DialogTitle className="text-lg font-bold">
-                  My Profile
+                  My account
                 </DialogTitle>
                 <DialogDescription>
                   Update your profile information.
@@ -39,6 +41,7 @@ export const SettingsModal = () => {
                     </div>
                   </div>
 
+                  {/*   */}
                   <div className="ml-4 w-64">
                     <label
                       htmlFor="preferred-name"
@@ -55,6 +58,77 @@ export const SettingsModal = () => {
                 </div>
 
                 <div className="h-fit mt-2 text-sm">Add photo</div>
+              </div>
+
+              {/*   */}
+              <div className="flex flex-col">
+                <h2 className="text-lg font-bold">Account security</h2>
+                <Separator className="my-2" />
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Email</p>
+                      <p className="text-sm text-muted-foreground">
+                        rene.ruano95@gmail.com
+                      </p>
+                    </div>
+                    <Button variant="outline" className="h-fit px-3">
+                      Change email
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Password</p>
+                      <p className="text-sm text-muted-foreground">
+                        Set a permanent password to login to your account.
+                      </p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">2-step verification</p>
+                      <p className="text-sm text-muted-foreground">
+                        Add an additional layer of security to your account
+                        during login.
+                      </p>
+                    </div>
+                    <Switch />
+                  </div>
+                </div>
+              </div>
+              {/*   */}
+
+              <div className="flex flex-col">
+                <h2 className="text-lg font-bold">Support</h2>
+                <Separator className="my-2" />
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Support access</p>
+                      <p className="text-sm text-muted-foreground max-w-md">
+                        Allow support to access your account to help with
+                        issues.
+                      </p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-red-500">
+                        Delete my account
+                      </p>
+                      <p className="text-sm text-muted-foreground max-w-md">
+                        Permanently delete the account and remove access from
+                        all workspaces.
+                      </p>
+                    </div>
+                    <Icon name="ChevronRight" className="size-5" />
+                  </div>
+                </div>
               </div>
             </div>
           </main>
