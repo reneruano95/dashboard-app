@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 
 import { createBrowserClient } from "../supabase/client";
-import { Role, SignIn } from "../types";
+import { SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../queries/agencies";
+import { getUserRoleFromSession, handleError } from "../utils";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -44,7 +44,7 @@ export const useAuth = () => {
       });
 
       if (error) {
-        throw error as Error;
+        handleError(error as Error);
       }
 
       return data;
@@ -60,11 +60,7 @@ export const useAuth = () => {
 
       const session = data.session;
       if (session) {
-        const jwt = jwtDecode(session.access_token);
-
-        // @ts-ignore
-        const userRole: Role = jwt.user_role;
-        // console.log("User role:", userRole);
+        const userRole = getUserRoleFromSession(session);
 
         if (userRole === "admin") {
           return router.replace("/dashboard");
@@ -99,7 +95,7 @@ export const useAuth = () => {
       const { error } = await supabase.auth.signOut({ scope: "local" });
 
       if (error) {
-        throw new Error(error.message);
+        handleError(error as Error);
       }
     },
     onError: (error) => {
@@ -118,22 +114,16 @@ export const useAuth = () => {
       const { data, error } = await supabase.auth.getSession();
 
       if (error) {
-        throw new Error(error.message);
+        handleError(error as Error);
       }
 
       if (!data.session) {
         throw new Error("Session not found");
       }
 
-      const jwt = jwtDecode(data.session.access_token);
-
-      // @ts-ignore
-      const userRole: Role = jwt.user_role;
-
-      return userRole;
+      return getUserRoleFromSession(data.session);
     },
     enabled: pathname !== "/sign-in",
-    refetchOnMount: false,
   });
 
   return { user, signIn, logout, userRole };

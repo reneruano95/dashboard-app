@@ -5,7 +5,6 @@ import { icons } from "lucide-react";
 
 import { useAuth } from "@/lib/hooks/use-auth";
 import { Separator } from "../ui/separator";
-import { getQueryClient } from "../providers/get-query-client";
 import { useGetUser } from "@/lib/hooks/use-get-user";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileIcon } from "../icons/profile-icon";
@@ -13,19 +12,10 @@ import { formatRole } from "@/lib/utils";
 import { SidebarButton } from "./sidebar-button";
 
 export const SettingsSidebar = () => {
-  const queryClient = getQueryClient();
   const {
     userRole: { data: role },
     user: { data: user },
   } = useAuth();
-
-  if (!user) {
-    queryClient.refetchQueries({
-      queryKey: ["user"],
-      type: "inactive",
-      exact: true,
-    });
-  }
 
   const userId = user?.id!;
   const { data: userFromDb } = useGetUser(userId);

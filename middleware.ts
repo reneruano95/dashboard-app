@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtDecode } from "jwt-decode";
 
 import { updateSession } from "./lib/supabase/middleware";
 import { getAgencyByUser } from "./lib/queries/agencies";
-import { Role } from "./lib/types";
+import { getUserRoleFromSession } from "./lib/utils";
 
 const appsPages = [
   "/apps/to-dos",
@@ -43,11 +42,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (session) {
-      const jwt = jwtDecode(session.access_token);
-
-      // @ts-ignore
-      const userRole: Role = jwt.user_role;
-      // console.log("User role:", userRole);
+      const userRole = getUserRoleFromSession(session);
 
       if (userRole === "admin") {
         if (!path.startsWith("/dashboard")) {
