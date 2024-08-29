@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback } from "react";
-import { icons } from "lucide-react";
 
 import { useAuth } from "@/lib/hooks/use-auth";
 import { Separator } from "../ui/separator";
@@ -10,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileIcon } from "../icons/profile-icon";
 import { formatRole } from "@/lib/utils";
 import { SidebarButton } from "./sidebar-button";
+import { MenuItem, menuItemsAccount, menuItemsAgency } from "./menu-items";
 
 export const SettingsSidebar = () => {
   const {
@@ -21,9 +21,7 @@ export const SettingsSidebar = () => {
   const { data: userFromDb } = useGetUser(userId);
 
   const renderSidebarButton = useCallback(
-    ({ icon, label }: { icon: keyof typeof icons; label: string }) => (
-      <SidebarButton icon={icon} label={label} />
-    ),
+    ({ icon, label }: MenuItem) => <SidebarButton icon={icon} label={label} />,
     []
   );
 
@@ -48,22 +46,9 @@ export const SettingsSidebar = () => {
 
       <div className="flex flex-col gap-[1px] text-muted-foreground">
         <h3 className="mb-1 text-xs font-semibold text-zinc-500">Account</h3>
-        {renderSidebarButton({
-          icon: "User",
-          label: "My account",
-        })}
-        {renderSidebarButton({
-          icon: "SlidersHorizontal",
-          label: "My settings",
-        })}
-        {renderSidebarButton({
-          icon: "BellDot",
-          label: "My notifications",
-        })}
-        {renderSidebarButton({
-          icon: "Globe",
-          label: "Language & region",
-        })}
+        {menuItemsAccount.map(({ icon, label }) =>
+          renderSidebarButton({ icon, label })
+        )}
       </div>
 
       {/* {role === "agency_owner" && ( */}
@@ -71,27 +56,9 @@ export const SettingsSidebar = () => {
         <Separator className="my-4" />
         <h3 className="mb-1 text-xs font-semibold text-zinc-500">Agency</h3>
         <div className="flex flex-col gap-[1px] text-muted-foreground">
-          {renderSidebarButton({
-            icon: "Settings",
-            label: "Settings",
-          })}
-          {renderSidebarButton({
-            icon: "Users",
-            label: "Members",
-          })}
-          {renderSidebarButton({
-            icon: "Building2",
-            label: "Teamspaces",
-          })}
-          {renderSidebarButton({
-            icon: "WalletCards",
-            label: "Billing & Invoices",
-          })}
-
-          {renderSidebarButton({
-            icon: "Workflow",
-            label: "Integrations",
-          })}
+          {menuItemsAgency.map(({ icon, label }) =>
+            renderSidebarButton({ icon, label })
+          )}
         </div>
       </>
       {/* )} */}

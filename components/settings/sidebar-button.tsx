@@ -1,12 +1,8 @@
-import { icons } from "lucide-react";
-
 import { Button } from "../ui/button";
 import { Icon } from "../global/icon";
+import { MenuItem } from "./menu-items";
 
-interface SidebarButtonProps {
-  icon: keyof typeof icons;
-  label: string;
-}
+interface SidebarButtonProps extends MenuItem {}
 
 export const SidebarButton = ({ icon, label }: SidebarButtonProps) => (
   <Button
