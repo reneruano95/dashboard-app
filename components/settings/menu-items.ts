@@ -3,13 +3,14 @@ import { icons } from "lucide-react";
 export type MenuItem = {
   icon: keyof typeof icons;
   label: string;
+  labelMobile?: string;
 };
 
 export const menuItemsAccount: MenuItem[] = [
-  { icon: "User", label: "My account" },
-  { icon: "SlidersHorizontal", label: "My settings" },
-  { icon: "BellDot", label: "Notifications" },
-  { icon: "Globe", label: "Language & region" },
+  { icon: "User", label: "My account", labelMobile: "Account" },
+  { icon: "SlidersHorizontal", label: "My settings", labelMobile: "Settings" },
+  { icon: "BellDot", label: "Notifications", labelMobile: "Notifications" },
+  { icon: "Globe", label: "Language & region", labelMobile: "Language" },
 ];
 
 export const menuItemsAgency: MenuItem[] = [
