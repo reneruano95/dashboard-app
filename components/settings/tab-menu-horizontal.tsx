@@ -7,10 +7,10 @@ export const TabMenuHorizontal = () => {
   return (
     <Tabs defaultValue="My account" className="md:hidden">
       <TabsList className="m-4 mb-2 flex h-fit">
-        {menuItemsAccount.map(({ labelMobile }) => (
+        {menuItemsAccount.map(({ labelMobile, label }) => (
           <TabsTrigger
             key={labelMobile}
-            value={labelMobile!}
+            value={label}
             className="h-fit flex text-sm py-1 px-2"
           >
             {labelMobile}
