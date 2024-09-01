@@ -43,7 +43,7 @@ export const TabMenuVertical = () => {
 
         <div className="flex flex-col gap-[1px] text-muted-foreground">
           <TabsList
-            className="flex flex-col flex-1 justify-start h-fit p-0"
+            className="flex flex-col flex-1 gap-[1px] justify-start h-fit p-0"
             aria-orientation="vertical"
           >
             <h3 className="mb-1 text-xs text-left font-semibold text-zinc-500 w-full">
@@ -69,7 +69,7 @@ export const TabMenuVertical = () => {
               <TabsTrigger
                 key={label}
                 value={label}
-                className="w-full h-fit flex gap-2 justify-start text-sm py-1 px-3 hover:bg-neutral-300 dark:hover:bg-neutral-600"
+                className="w-full h-fit flex gap-2 justify-start text-sm py-1 px-3 hover:bg-neutral-300 dark:hover:bg-neutral-600 data-[state=active]:bg-neutral-300 dark:data-[state=active]:bg-neutral-600"
               >
                 <Icon name={icon} className="w-5 h-5" />
                 <span>{label}</span>
