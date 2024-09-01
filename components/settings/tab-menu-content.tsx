@@ -33,7 +33,7 @@ export const TabMenuContent = () => {
   return (
     <>
       {tabMenuContent.map(({ value, content }) => (
-        <TabsContent key={value} value={value} className="mt-0">
+        <TabsContent key={value} value={value} className="mt-0 flex-1">
           {content}
         </TabsContent>
       ))}
