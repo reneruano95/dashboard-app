@@ -5,7 +5,7 @@ import { Icon } from "../global/icon";
 import { Button } from "../ui/button";
 import { sidebarPages } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/lib/hooks/use-auth";
+import { useAuth } from "@/lib/hooks/auth/use-auth";
 import { Skeleton } from "../ui/skeleton";
 
 interface PagesItemsProps {

@@ -8,8 +8,8 @@ import {
   menuItemsAccount,
   menuItemsAgency,
 } from "@/components/settings/menu-items";
-import { useAuth } from "@/lib/hooks/use-auth";
-import { useGetUser } from "@/lib/hooks/use-get-user";
+import { useAuth } from "@/lib/hooks/auth/use-auth";
+import { useGetUser } from "@/lib/hooks/users/use-get-user";
 import { formatRole } from "@/lib/utils";
 import { TabTriggerItem } from "./tab-trigger-item";
 

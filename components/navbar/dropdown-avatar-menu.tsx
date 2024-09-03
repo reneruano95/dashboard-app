@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileIcon } from "@/components/icons/profile-icon";
-import { useAuth } from "@/lib/hooks/use-auth";
-import { useGetUser } from "@/lib/hooks/use-get-user";
+import { useAuth } from "@/lib/hooks/auth/use-auth";
+import { useGetUser } from "@/lib/hooks/users/use-get-user";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { Icon } from "@/components/global/icon";
 

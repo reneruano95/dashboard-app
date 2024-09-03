@@ -7,7 +7,7 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { Icon } from "../global/icon";
 import { cn } from "@/lib/utils";
-import { useDialog } from "@/lib/hooks/use-dialog";
+import { useDialog } from "@/lib/hooks/modals/use-dialog";
 import { Navbar } from "../navbar/navbar";
 import { PagesItems } from "./pages-items";
 import { AppItems } from "./app-items";

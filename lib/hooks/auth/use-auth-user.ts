@@ -1,7 +1,7 @@
 import { UserResponse } from "@supabase/supabase-js";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-import { createBrowserClient } from "../supabase/client";
+import { createBrowserClient } from "../../supabase/client";
 
 export const useAuthUser = () => {
   const user = useQuery({

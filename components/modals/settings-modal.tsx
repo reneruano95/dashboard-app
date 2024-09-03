@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { TabMenuVertical } from "@/components/settings/tab-menu-vertical";
-import { useDialog } from "@/lib/hooks/use-dialog";
+import { useDialog } from "@/lib/hooks/modals/use-dialog";
 import { TabMenuHorizontal } from "../settings/tab-menu-horizontal";
 
 export const SettingsModal = () => {
