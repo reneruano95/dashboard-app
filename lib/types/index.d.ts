@@ -3,6 +3,7 @@ import { icons } from "lucide-react";
 import { Database, Tables } from "./database.types";
 import { SignInSchema } from "./validations";
 
+//  Global types
 declare type TypedSupabaseClient = SupabaseClient<Database>;
 declare type SignIn = z.infer<typeof SignInSchema>;
 declare type Profile = Tables<"users">;
@@ -12,6 +13,7 @@ declare type RolePermissions = Tables<"role_permissions">;
 declare type Role = Database["public"]["Enums"]["app_role"];
 declare type Permission = Database["public"]["Enums"]["app_permission"];
 
+//  Sidebar types
 declare type SidebarPageItem = {
   title: string;
   icon: keyof typeof icons;

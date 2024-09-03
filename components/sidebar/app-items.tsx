@@ -13,7 +13,7 @@ interface AppItemsProps {
 
 export const AppItems = ({ pathname, mainPath }: AppItemsProps) => {
   return (
-    <div className="px-2 mt-2">
+    <div className="px-2 mt-2 flex flex-col gap-[1px]">
       {sidebarApps.map(({ label, children }) => (
         <Fragment key={label}>
           <h3 className="mb-1 text-xs font-semibold text-zinc-500">{label}</h3>

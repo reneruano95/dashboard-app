@@ -2,13 +2,13 @@ import { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { User } from "@supabase/supabase-js";
 
 import { createBrowserClient } from "../../supabase/client";
 import { Role, SignIn } from "../../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../../queries/agencies";
 import { getUserRoleFromSession, handleError } from "../../utils";
-import { User } from "@supabase/supabase-js";
 
 export const useAuth = () => {
   const router = useRouter();
