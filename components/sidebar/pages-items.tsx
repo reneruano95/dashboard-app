@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Fragment, useMemo } from "react";
 
-import { Icon } from "../global/icon";
-import { Button } from "../ui/button";
+import { Icon } from "@/components/global/icon";
+import { Button } from "@/components/ui/button";
+import { PagesItemsSkeleton } from "./skeletons";
 import { sidebarPages } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/hooks/auth/use-auth";
-import { Skeleton } from "../ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface PagesItemsProps {
   pathname: string;
@@ -26,16 +26,12 @@ export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
   }, [role]);
 
   if (isLoading || isFetching) {
-    return (
-      <div className="px-2 mt-2 h-48" aria-busy="true">
-        <Skeleton className="w-full h-full rounded-sm bg-neutral-300 dark:bg-neutral-600" />
-      </div>
-    );
+    return <PagesItemsSkeleton />;
   }
 
   return (
     <>
-      <div className="px-2 mt-2">
+      <div className="px-2 mt-2 flex flex-col gap-[1px]">
         {filteredPages.map(({ label, children }) => (
           <Fragment key={label}>
             <h3 className="mb-1 text-xs font-semibold text-zinc-500">
