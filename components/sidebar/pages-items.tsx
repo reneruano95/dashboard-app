@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 
 import { Icon } from "../global/icon";
 import { Button } from "../ui/button";
@@ -18,6 +18,13 @@ export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
     userRole: { data: role, isLoading, isFetching },
   } = useAuth();
 
+  const filteredPages = useMemo(() => {
+    return sidebarPages.map(({ label, children }) => ({
+      label,
+      children: children.filter(({ roles }) => roles.includes(role!)),
+    }));
+  }, [role]);
+
   if (isLoading || isFetching) {
     return (
       <div className="px-2 mt-2 h-48" aria-busy="true">
@@ -29,24 +36,20 @@ export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
   return (
     <>
       <div className="px-2 mt-2">
-        {sidebarPages.map(({ label, children }) => (
+        {filteredPages.map(({ label, children }) => (
           <Fragment key={label}>
             <h3 className="mb-1 text-xs font-semibold text-zinc-500">
               {label}
             </h3>
-            {children.map(({ title, icon, href, roles }) => {
+            {children.map(({ title, icon, href }) => {
               const isActive = pathname === `/${mainPath}${href}`;
-              const hasAccess = roles.includes(role!);
-
-              if (!hasAccess) return null;
 
               return (
                 <Button
                   key={title}
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start py-1 px-2 h-fit hover:bg-neutral-300 dark:hover:bg-neutral-600 text-muted-foreground",
-                    !hasAccess && "cursor-not-allowed"
+                    "w-full justify-start py-1 px-2 h-fit hover:bg-neutral-300 dark:hover:bg-neutral-600 text-muted-foreground"
                   )}
                   asChild
                 >
