@@ -1,53 +1,64 @@
+import { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { createBrowserClient } from "../supabase/client";
-import { SignIn } from "../types";
+import { Role, SignIn } from "../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../queries/agencies";
 import { getUserRoleFromSession, handleError } from "../utils";
+import { User } from "@supabase/supabase-js";
 
 export const useAuth = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const supabase = createBrowserClient();
-  const queryClient = getQueryClient();
+  const supabase = useMemo(() => createBrowserClient(), []);
+  const queryClient = useMemo(() => getQueryClient(), []);
 
-  const user = useQuery({
+  const user = useQuery<User>({
     queryKey: ["user"],
     queryFn: async () => {
-      const { data, error } = await supabase.auth.getUser();
+      try {
+        const { data, error } = await supabase.auth.getUser();
 
-      if (error || !data.user) {
-        console.error("User not found. Signing out.");
+        if (error || !data.user) {
+          console.error("User not found. Signing out.");
+          await supabase.auth.signOut({ scope: "local" });
+          throw new Error("User not found");
+        }
 
-        await supabase.auth.signOut({
-          scope: "local",
-        });
-        throw new Error("User not found");
+        return data.user;
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        throw err;
       }
-
-      return data.user;
     },
     enabled: false,
     staleTime: 0,
     refetchOnMount: false,
+    select: useCallback((data: User) => data, []),
   });
 
   const signIn = useMutation({
     mutationFn: async ({ email, password }: SignIn) => {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-      if (error) {
-        handleError(error as Error);
+        if (error) {
+          console.error("Error signing in:", error);
+          throw new Error("Sign in failed");
+        }
+
+        return data;
+      } catch (err) {
+        console.error("Error during sign in:", err);
+        throw err;
       }
-
-      return data;
     },
     mutationKey: ["signIn"],
     onError: (error) => {
@@ -111,19 +122,25 @@ export const useAuth = () => {
   const userRole = useQuery({
     queryKey: ["role"],
     queryFn: async () => {
-      const { data, error } = await supabase.auth.getSession();
+      try {
+        const { data, error } = await supabase.auth.getSession();
 
-      if (error) {
-        handleError(error as Error);
+        if (error) {
+          handleError(error as Error);
+        }
+
+        if (!data.session) {
+          throw new Error("Session not found");
+        }
+
+        return getUserRoleFromSession(data.session);
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+        throw error;
       }
-
-      if (!data.session) {
-        throw new Error("Session not found");
-      }
-
-      return getUserRoleFromSession(data.session);
     },
-    enabled: pathname !== "/sign-in",
+    enabled: pathname !== "/sign-in" && !logout.isSuccess,
+    select: useCallback((data: Role) => data, []),
   });
 
   return { user, signIn, logout, userRole };
