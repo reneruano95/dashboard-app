@@ -1,10 +1,4 @@
-import { icons } from "lucide-react";
-
-export type MenuItem = {
-  icon: keyof typeof icons;
-  label: string;
-  labelMobile?: string;
-};
+import { MenuItem } from "./types";
 
 export const menuItemsAccount: MenuItem[] = [
   { icon: "User", label: "My account", labelMobile: "Account" },

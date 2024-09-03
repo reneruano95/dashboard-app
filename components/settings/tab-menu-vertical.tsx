@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/lib/hooks/use-auth";
 import { useGetUser } from "@/lib/hooks/use-get-user";
 import { formatRole } from "@/lib/utils";
+import { TabTriggerItem } from "./tab-trigger-item";
 
 export const TabMenuVertical = () => {
   const {
@@ -50,15 +51,7 @@ export const TabMenuVertical = () => {
               Account
             </h3>
             {menuItemsAccount.map(({ label, icon }) => (
-              <TabsTrigger
-                key={label}
-                value={label}
-                className="w-full h-fit flex gap-2 justify-start text-sm py-1 px-3 hover:bg-neutral-300 dark:hover:bg-neutral-600
-                data-[state=active]:bg-neutral-300 dark:data-[state=active]:bg-neutral-600"
-              >
-                <Icon name={icon} className="w-5 h-5" />
-                <span>{label}</span>
-              </TabsTrigger>
+              <TabTriggerItem key={label} icon={icon} label={label} />
             ))}
 
             <Separator className="my-2" />
@@ -66,14 +59,7 @@ export const TabMenuVertical = () => {
               Agency
             </h3>
             {menuItemsAgency.map(({ icon, label }) => (
-              <TabsTrigger
-                key={label}
-                value={label}
-                className="w-full h-fit flex gap-2 justify-start text-sm py-1 px-3 hover:bg-neutral-300 dark:hover:bg-neutral-600 data-[state=active]:bg-neutral-300 dark:data-[state=active]:bg-neutral-600"
-              >
-                <Icon name={icon} className="w-5 h-5" />
-                <span>{label}</span>
-              </TabsTrigger>
+              <TabTriggerItem key={label} icon={icon} label={label} />
             ))}
           </TabsList>
         </div>
