@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { User } from "@supabase/supabase-js";
 
@@ -12,7 +12,6 @@ import { getUserRoleFromSession, handleError } from "../../utils";
 
 export const useAuth = () => {
   const router = useRouter();
-  const pathname = usePathname();
 
   const supabase = useMemo(() => createBrowserClient(), []);
   const queryClient = useMemo(() => getQueryClient(), []);
@@ -67,11 +66,12 @@ export const useAuth = () => {
 
     onSuccess: async (data) => {
       queryClient.setQueryData(["user"], data.user);
-      user.refetch();
 
       const session = data.session;
       if (session) {
         const userRole = getUserRoleFromSession(session);
+
+        queryClient.setQueryData(["role"], userRole);
 
         if (userRole === "admin") {
           return router.replace("/dashboard");
@@ -114,8 +114,8 @@ export const useAuth = () => {
     },
     onSuccess: () => {
       queryClient.clear();
-      toast.success("You have been signed out");
       router.replace("/sign-in");
+      toast.success("You have been signed out");
     },
   });
 
@@ -139,7 +139,9 @@ export const useAuth = () => {
         throw error;
       }
     },
-    enabled: pathname !== "/sign-in" && !logout.isSuccess,
+    enabled: false,
+    staleTime: 0,
+    refetchOnMount: false,
     select: useCallback((data: Role) => data, []),
   });
 
