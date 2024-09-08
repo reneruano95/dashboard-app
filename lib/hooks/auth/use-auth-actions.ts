@@ -1,44 +1,19 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { User } from "@supabase/supabase-js";
 
 import { createBrowserClient } from "../../supabase/client";
-import { Role, SignIn } from "../../types";
+import { SignIn } from "../../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../../queries/agencies";
 import { getUserRoleFromSession, handleError } from "../../utils";
 
-export const useAuth = () => {
+export const useAuthActions = () => {
   const router = useRouter();
 
   const supabase = useMemo(() => createBrowserClient(), []);
   const queryClient = useMemo(() => getQueryClient(), []);
-
-  const user = useQuery<User>({
-    queryKey: ["user"],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase.auth.getUser();
-
-        if (error || !data.user) {
-          console.error("User not found. Signing out.");
-          await supabase.auth.signOut({ scope: "local" });
-          throw new Error("User not found");
-        }
-
-        return data.user;
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        throw err;
-      }
-    },
-    enabled: false,
-    staleTime: 0,
-    refetchOnMount: false,
-    select: useCallback((data: User) => data, []),
-  });
 
   const signIn = useMutation({
     mutationFn: async ({ email, password }: SignIn) => {
@@ -119,31 +94,5 @@ export const useAuth = () => {
     },
   });
 
-  const userRole = useQuery({
-    queryKey: ["role"],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-          handleError(error as Error);
-        }
-
-        if (!data.session) {
-          throw new Error("Session not found");
-        }
-
-        return getUserRoleFromSession(data.session);
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-        throw error;
-      }
-    },
-    enabled: false,
-    staleTime: 0,
-    refetchOnMount: false,
-    select: useCallback((data: Role) => data, []),
-  });
-
-  return { user, signIn, logout, userRole };
+  return { signIn, logout };
 };

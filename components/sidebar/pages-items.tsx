@@ -5,8 +5,8 @@ import { Icon } from "@/components/global/icon";
 import { Button } from "@/components/ui/button";
 import { PagesItemsSkeleton } from "./skeletons";
 import { sidebarPages } from "@/lib/constants";
-import { useAuth } from "@/lib/hooks/auth/use-auth";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/lib/hooks/users/use-user";
 
 interface PagesItemsProps {
   pathname: string;
@@ -16,7 +16,7 @@ interface PagesItemsProps {
 export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
   const {
     userRole: { data: role, isLoading, isFetching },
-  } = useAuth();
+  } = useUser();
 
   const filteredPages = useMemo(() => {
     return sidebarPages.map(({ label, children }) => ({

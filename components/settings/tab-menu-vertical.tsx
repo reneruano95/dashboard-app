@@ -1,14 +1,14 @@
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList } from "@/components/ui/tabs";
 import { ProfileIcon } from "@/components/icons/profile-icon";
-import { Icon } from "@/components/global/icon";
+import { useUser } from "@/lib/hooks/users/use-user";
 import { TabMenuContent } from "@/components/settings/tab-menu-content";
 import {
   menuItemsAccount,
   menuItemsAgency,
 } from "@/components/settings/menu-items";
-import { useAuth } from "@/lib/hooks/auth/use-auth";
+
 import { useGetUser } from "@/lib/hooks/users/use-get-user";
 import { formatRole } from "@/lib/utils";
 import { TabTriggerItem } from "./tab-trigger-item";
@@ -17,7 +17,7 @@ export const TabMenuVertical = () => {
   const {
     userRole: { data: role },
     user: { data: user },
-  } = useAuth();
+  } = useUser();
 
   const userId = user?.id!;
   const { data: userFromDb } = useGetUser(userId);

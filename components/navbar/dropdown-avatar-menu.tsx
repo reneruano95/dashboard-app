@@ -9,17 +9,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileIcon } from "@/components/icons/profile-icon";
-import { useAuth } from "@/lib/hooks/auth/use-auth";
+import { useUser } from "@/lib/hooks/users/use-user";
+import { useAuthActions } from "@/lib/hooks/auth/use-auth-actions";
 import { useGetUser } from "@/lib/hooks/users/use-get-user";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { Icon } from "@/components/global/icon";
 
 export const DropdownAvatarMenu = () => {
   const queryClient = getQueryClient();
+  const { logout } = useAuthActions();
   const {
     user: { data: user },
-    logout,
-  } = useAuth();
+  } = useUser();
 
   const handleSignOut = async () => {
     return await logout.mutateAsync();

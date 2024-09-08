@@ -20,11 +20,11 @@ import { SignIn } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/validations";
 import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/lib/hooks/auth/use-auth";
+import { useAuthActions } from "@/lib/hooks/auth/use-auth-actions";
 import { createUser } from "@/lib/actions/auth";
 
 export const SignInForm = () => {
-  const { signIn } = useAuth();
+  const { signIn } = useAuthActions();
 
   const form = useForm<SignIn>({
     defaultValues: {
