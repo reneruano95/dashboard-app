@@ -1,10 +1,5 @@
 "use server";
-
-import { AuthError, User } from "@supabase/supabase-js";
-
-import { createServerClient } from "../supabase/server";
 import { Profile, SignIn } from "../types";
-import { parseStringify } from "../utils";
 import { createAdminAuthClient } from "../supabase/admin";
 
 export const createUser = async ({ email, password }: SignIn) => {
@@ -33,33 +28,5 @@ export const createUser = async ({ email, password }: SignIn) => {
       });
   } catch (error) {
     throw error;
-  }
-};
-
-export const signInWithEmail = async ({ email, password }: SignIn) => {
-  const supabase = createServerClient();
-
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      return {
-        data: null,
-        error: parseStringify(error) as AuthError,
-      };
-    }
-
-    return {
-      data: parseStringify(data.user) as User,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: parseStringify(error) as AuthError,
-    };
   }
 };
