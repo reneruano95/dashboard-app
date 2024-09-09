@@ -8,6 +8,7 @@ import { SignIn } from "../../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../../queries/agencies";
 import { getUserRoleFromSession, handleError } from "../../utils";
+import { queriesKeys } from "@/lib/queries-keys";
 
 export const useAuthActions = () => {
   const router = useRouter();
@@ -40,13 +41,13 @@ export const useAuthActions = () => {
     },
 
     onSuccess: async (data) => {
-      queryClient.setQueryData(["user"], data.user);
+      queryClient.setQueryData([queriesKeys.user], data.user);
 
       const session = data.session;
       if (session) {
         const userRole = getUserRoleFromSession(session);
 
-        queryClient.setQueryData(["role"], userRole);
+        queryClient.setQueryData([queriesKeys.role], userRole);
 
         if (userRole === "admin") {
           return router.replace("/dashboard");
@@ -54,7 +55,7 @@ export const useAuthActions = () => {
 
         if (userRole === "agency_user" || userRole === "agency_owner") {
           const agency = await queryClient.fetchQuery({
-            queryKey: ["agency"],
+            queryKey: [queriesKeys.agency],
             queryFn: async () =>
               await getAgencyByUser({
                 userId: data.user.id,
@@ -62,7 +63,7 @@ export const useAuthActions = () => {
               }),
           });
 
-          queryClient.setQueryData(["agency", agency.id], agency);
+          queryClient.setQueryData([queriesKeys.agency, agency.id], agency);
 
           if (!agency) {
             throw new Error("Agency not found");

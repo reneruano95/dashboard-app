@@ -5,12 +5,13 @@ import { User } from "@supabase/supabase-js";
 import { createBrowserClient } from "../../supabase/client";
 import { Role } from "../../types";
 import { getUserRoleFromSession, handleError } from "../../utils";
+import { queriesKeys } from "@/lib/queries-keys";
 
 export const useUser = () => {
   const supabase = useMemo(() => createBrowserClient(), []);
 
   const user = useQuery<User>({
-    queryKey: ["user"],
+    queryKey: [queriesKeys.user],
     queryFn: async () => {
       try {
         const { data, error } = await supabase.auth.getUser();
@@ -33,8 +34,8 @@ export const useUser = () => {
     select: useCallback((data: User) => data, []),
   });
 
-  const userRole = useQuery({
-    queryKey: ["role"],
+  const userRole = useQuery<Role>({
+    queryKey: [queriesKeys.role],
     queryFn: async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
