@@ -1,33 +1,18 @@
 import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "@supabase/supabase-js";
 
 import { createBrowserClient } from "../../supabase/client";
-import { Role } from "../../types";
-import { getUserRoleFromSession, handleError } from "../../utils";
+import { Role, User } from "../../types";
 import { queriesKeys } from "@/lib/queries-keys";
+import { getUserRole } from "@/lib/queries/roles";
+import { getUser } from "@/lib/queries/users";
 
 export const useUser = () => {
   const supabase = useMemo(() => createBrowserClient(), []);
 
   const user = useQuery<User>({
     queryKey: [queriesKeys.user],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase.auth.getUser();
-
-        if (error || !data.user) {
-          console.error("User not found. Signing out.");
-          await supabase.auth.signOut({ scope: "local" });
-          throw new Error("User not found");
-        }
-
-        return data.user;
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        throw err;
-      }
-    },
+    queryFn: () => getUser(supabase),
     enabled: false,
     staleTime: Infinity,
     refetchOnMount: false,
@@ -36,24 +21,7 @@ export const useUser = () => {
 
   const userRole = useQuery<Role>({
     queryKey: [queriesKeys.role],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-          handleError(error as Error);
-        }
-
-        if (!data.session) {
-          throw new Error("Session not found");
-        }
-
-        return getUserRoleFromSession(data.session);
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-        throw error;
-      }
-    },
+    queryFn: () => getUserRole(supabase),
     enabled: !!user.data,
     staleTime: Infinity,
     refetchOnMount: false,

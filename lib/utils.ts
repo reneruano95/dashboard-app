@@ -28,9 +28,3 @@ export const getUserRoleFromSession = (session: Session): Role => {
   // @ts-ignore
   return jwt.user_role;
 };
-
-// function to handle errors
-export const handleError = (error: Error) => {
-  console.error(error.message);
-  throw error;
-};

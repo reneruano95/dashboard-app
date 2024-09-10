@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileIcon } from "@/components/icons/profile-icon";
 import { useUser } from "@/lib/hooks/users/use-user";
 import { useAuthActions } from "@/lib/hooks/auth/use-auth-actions";
-import { useGetUser } from "@/lib/hooks/users/use-get-user";
+
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { Icon } from "@/components/global/icon";
 
@@ -34,25 +34,12 @@ export const DropdownAvatarMenu = () => {
     });
   }
 
-  const userId = user?.id!;
-  const { data: userFromDb, error, isLoading, isFetching } = useGetUser(userId);
-
-  if (error) {
-    console.error("Error fetching user:", error);
-  }
-
-  if (isLoading || isFetching) {
-    return (
-      <Skeleton className="h-8 w-8 rounded-full border-2 border-red-600 bg-neutral-300 dark:bg-neutral-600" />
-    );
-  }
-
   return (
     <div className="flex items-center gap-x-2">
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar className="h-8 w-8 border-2 border-red-600">
-            <AvatarImage src={userFromDb?.avatar_url} />
+            <AvatarImage src={user?.avatar_url} />
             <AvatarFallback>
               <ProfileIcon className="h-6 w-6 text-muted-foreground" />
             </AvatarFallback>
@@ -60,8 +47,8 @@ export const DropdownAvatarMenu = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 text-muted-foreground">
           <DropdownMenuLabel className="flex flex-col">
-            <span className="text-primary">{userFromDb?.full_name}</span>
-            <span className="text-xs">{userFromDb?.email}</span>
+            <span className="text-primary">{user?.full_name}</span>
+            <span className="text-xs">{user?.email}</span>
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />

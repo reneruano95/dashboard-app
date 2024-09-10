@@ -9,7 +9,6 @@ import {
   menuItemsAgency,
 } from "@/components/settings/menu-items";
 
-import { useGetUser } from "@/lib/hooks/users/use-get-user";
 import { formatRole } from "@/lib/utils";
 import { TabTriggerItem } from "./tab-trigger-item";
 
@@ -19,23 +18,18 @@ export const TabMenuVertical = () => {
     user: { data: user },
   } = useUser();
 
-  const userId = user?.id!;
-  const { data: userFromDb } = useGetUser(userId);
-
   return (
     <Tabs defaultValue="My account" className="hidden md:flex w-full">
       <div className="flex flex-col w-56 bg-muted border-r py-3 px-2 gap-2">
         <div className="flex items-center gap-2 mb-2">
           <Avatar className="h-9 w-9 border-2 border-neutral-600">
-            <AvatarImage src={userFromDb?.avatar_url} />
+            <AvatarImage src={user?.avatar_url} />
             <AvatarFallback>
               <ProfileIcon className="h-6 w-6 text-muted-foreground" />
             </AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="text-sm font-semibold text-wrap ">
-              {userFromDb?.email}
-            </h2>
+            <h2 className="text-sm font-semibold text-wrap ">{user?.email}</h2>
             <div className="text-xs text-muted-foreground">
               {formatRole(role!)}
             </div>

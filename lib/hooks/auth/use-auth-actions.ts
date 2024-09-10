@@ -7,7 +7,7 @@ import { createBrowserClient } from "../../supabase/client";
 import { SignIn } from "../../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
 import { getAgencyByUser } from "../../queries/agencies";
-import { getUserRoleFromSession, handleError } from "../../utils";
+import { getUserRoleFromSession } from "../../utils";
 import { queriesKeys } from "@/lib/queries-keys";
 
 export const useAuthActions = () => {
@@ -82,7 +82,8 @@ export const useAuthActions = () => {
       const { error } = await supabase.auth.signOut({ scope: "local" });
 
       if (error) {
-        handleError(error as Error);
+        console.error("Error logging out:", error);
+        throw new Error("Error logging out");
       }
     },
     onError: (error) => {

@@ -1,25 +1,34 @@
 import { TypedSupabaseClient } from "../types";
 
-export const getUser = async ({
-  userId,
-  supabase,
-}: {
-  userId: string;
-  supabase: TypedSupabaseClient;
-}) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", userId)
-    .throwOnError()
-    .limit(1)
-    .single();
+export const getUser = async (supabase: TypedSupabaseClient) => {
+  try {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-  // console.log(data);
+    if (userError || !user) {
+      console.error("User not found. Signing out.");
+      await supabase.auth.signOut({ scope: "local" });
+      throw new Error("User not found");
+    }
 
-  if (error) throw error;
+    const { data: userData, error: userDataError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .throwOnError()
+      .limit(1)
+      .single();
 
-  if (!data) throw new Error("User not found");
+    if (userDataError || !userData) {
+      console.error("Error fetching user data:", userDataError);
+      throw new Error("Error fetching user data");
+    }
 
-  return data;
+    return userData;
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    throw err;
+  }
 };
