@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { jwtDecode } from "jwt-decode";
 import { Session } from "@supabase/supabase-js";
-
 import { Role } from "./types";
 
 export function cn(...inputs: ClassValue[]) {

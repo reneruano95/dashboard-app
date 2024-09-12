@@ -12,7 +12,7 @@ export const useUser = () => {
 
   const user = useQuery<User>({
     queryKey: [queriesKeys.user],
-    queryFn: () => getUser(supabase),
+    queryFn: async () => await getUser(supabase),
     enabled: false,
     staleTime: Infinity,
     refetchOnMount: false,
@@ -21,7 +21,7 @@ export const useUser = () => {
 
   const userRole = useQuery<Role>({
     queryKey: [queriesKeys.role],
-    queryFn: () => getUserRole(supabase),
+    queryFn: async () => await getUserRole(supabase),
     enabled: !!user.data,
     staleTime: Infinity,
     refetchOnMount: false,

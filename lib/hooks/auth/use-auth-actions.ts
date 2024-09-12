@@ -1,14 +1,14 @@
 import { useMemo } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { createBrowserClient } from "../../supabase/client";
-import { SignIn } from "../../types";
 import { getQueryClient } from "@/components/providers/get-query-client";
-import { getAgencyByUser } from "../../queries/agencies";
-import { getUserRoleFromSession } from "../../utils";
 import { queriesKeys } from "@/lib/queries-keys";
+import { getAgencyByUser } from "@/lib/queries/agencies";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { getUserRoleFromSession } from "@/lib/utils";
+import { SignIn } from "@/lib/types";
 
 export const useAuthActions = () => {
   const router = useRouter();
@@ -41,38 +41,32 @@ export const useAuthActions = () => {
     },
 
     onSuccess: async (data) => {
-      queryClient.setQueryData([queriesKeys.user], data.user);
-
       const session = data.session;
-      if (session) {
-        const userRole = getUserRoleFromSession(session);
 
-        queryClient.setQueryData([queriesKeys.role], userRole);
+      const userRole = getUserRoleFromSession(session);
+      queryClient.setQueryData([queriesKeys.role], userRole);
 
-        if (userRole === "admin") {
-          return router.replace("/dashboard");
+      if (userRole === "admin") {
+        return router.replace("/dashboard");
+      }
+
+      if (userRole.startsWith("agency")) {
+        const agency = await queryClient.fetchQuery({
+          queryKey: [queriesKeys.agency],
+          queryFn: async () =>
+            await getAgencyByUser({
+              userId: data.user.id,
+              supabase,
+            }),
+        });
+
+        queryClient.setQueryData([queriesKeys.agency, agency.id], agency);
+
+        if (!agency) {
+          throw new Error("Agency not found");
         }
 
-        if (userRole === "agency_user" || userRole === "agency_owner") {
-          const agency = await queryClient.fetchQuery({
-            queryKey: [queriesKeys.agency],
-            queryFn: async () =>
-              await getAgencyByUser({
-                userId: data.user.id,
-                supabase,
-              }),
-          });
-
-          queryClient.setQueryData([queriesKeys.agency, agency.id], agency);
-
-          if (!agency) {
-            throw new Error("Agency not found");
-          }
-
-          if (agency.id) {
-            return router.replace(`/${agency.id}`);
-          }
-        }
+        return router.replace(`/${agency.id}`);
       }
     },
   });

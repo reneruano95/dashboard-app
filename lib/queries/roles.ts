@@ -14,7 +14,9 @@ export const getUserRole = async (supabase: TypedSupabaseClient) => {
       throw new Error(errorMessage);
     }
 
-    return getUserRoleFromSession(data.session);
+    const userRole = getUserRoleFromSession(data.session);
+
+    return userRole;
   } catch (error) {
     console.error("Error fetching user role:", error);
     throw error;

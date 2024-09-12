@@ -1,25 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { updateSession } from "./lib/supabase/middleware";
-import { getAgencyByUser } from "./lib/queries/agencies";
 import { getUserRoleFromSession } from "./lib/utils";
-
-const appsPages = [
-  "/apps/to-dos",
-  "/apps/kanban",
-  "/apps/calendar",
-  "/apps/automation",
-];
+import { handleAdminRole, handleAgencyRole } from "./lib/redirect-utils";
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  const user = userData?.user;
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  const { data: sessionData, error: sessionError } =
-    await supabase.auth.getSession();
-  const session = sessionData?.session;
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
   const url = request.nextUrl;
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
@@ -45,42 +41,11 @@ export async function middleware(request: NextRequest) {
       const userRole = getUserRoleFromSession(session);
 
       if (userRole === "admin") {
-        if (!path.startsWith("/dashboard")) {
-          return NextResponse.redirect(new URL("/dashboard", request.url));
-        }
-
-        if (path.startsWith("/dashboard/apps")) {
-          const matchedPage = appsPages.find((page) => {
-            return path.startsWith(`/dashboard${page}`);
-          });
-          // console.log("Matched page for path:", path, "is:", matchedPage);
-
-          return NextResponse.rewrite(new URL(`${matchedPage}`, request.url));
-        }
+        return handleAdminRole(path, request);
       }
 
-      if (userRole === "agency_owner" || userRole === "agency_user") {
-        const { id: agencyId } = await getAgencyByUser({
-          userId: user?.id!,
-          supabase,
-        });
-
-        if (path === "/sign-in" || path === "/dashboard") {
-          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
-        }
-
-        if (!path.startsWith(`/${agencyId}`)) {
-          return NextResponse.redirect(new URL(`/${agencyId}`, request.url));
-        }
-
-        if (path.startsWith(`/${agencyId}/apps`)) {
-          const matchedPage = appsPages.find((page) => {
-            return path.startsWith(`/${agencyId}${page}`);
-          });
-          // console.log("Matched page for path:", path, "is:", matchedPage);
-
-          return NextResponse.rewrite(new URL(`${matchedPage}`, request.url));
-        }
+      if (userRole.startsWith("agency")) {
+        return handleAgencyRole(path, user?.id!, supabase, request);
       }
     }
   }
