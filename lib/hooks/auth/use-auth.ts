@@ -8,11 +8,10 @@ import { queriesKeys } from "@/lib/queries-keys";
 import { getAgencyByUser } from "@/lib/queries/agencies";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getUserRoleFromSession } from "@/lib/utils";
-import { SignIn } from "@/lib/types";
-import { getUser } from "@/lib/queries/users";
 import { signInWithPassword, signOut } from "@/lib/actions/auth";
+import { SignIn } from "@/lib/types";
 
-export const useAuthActions = () => {
+export const useAuth = () => {
   const router = useRouter();
   const supabase = useMemo(() => createBrowserClient(), []);
   const queryClient = useMemo(() => getQueryClient(), []);
@@ -26,12 +25,6 @@ export const useAuthActions = () => {
 
       const userRole = getUserRoleFromSession(session);
       queryClient.setQueryData([queriesKeys.role], userRole);
-
-      const user = await queryClient.fetchQuery({
-        queryKey: [queriesKeys.user],
-        queryFn: async () => await getUser(),
-      });
-      queryClient.setQueryData([queriesKeys.user], user);
 
       if (userRole === "admin") {
         return router.replace("/dashboard");

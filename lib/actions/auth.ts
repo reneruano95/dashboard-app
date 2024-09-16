@@ -26,7 +26,7 @@ export const signInWithPassword = async ({ email, password }: SignIn) => {
 export const signOut = async () => {
   const supabase = createServerClient();
   try {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" });
   } catch (error) {
     console.error("Error signing out:", error);
     throw error;

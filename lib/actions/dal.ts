@@ -1,25 +1,22 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 import { TypedSupabaseClient } from "../types";
 
 // Data Access Layer(DAL)
 export const verifySession = cache(async (supabase: TypedSupabaseClient) => {
-  try {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
-    if (error || !user) {
-      redirect("/sign-in");
-    }
-
-    return {
-      isAuthenticated: !!user,
-      userId: user?.id,
-    };
-  } catch (error) {
+  if (error || !user) {
     console.error("Error verifying session:", error);
-    throw error;
+    redirect("/sign-in");
   }
+
+  return {
+    isAuthenticated: !!user,
+    userId: user?.id,
+  };
 });

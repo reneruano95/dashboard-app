@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ProfileIcon } from "@/components/icons/profile-icon";
 import { useUser } from "@/lib/hooks/users/use-user";
-import { useAuthActions } from "@/lib/hooks/auth/use-auth";
+import { useAuth } from "@/lib/hooks/auth/use-auth";
 import { Icon } from "@/components/global/icon";
 
 export const DropdownAvatarMenu = () => {
-  const { logout } = useAuthActions();
-
   const {
     user: { data: user },
   } = useUser();
+
+  const { logout } = useAuth();
 
   const handleSignOut = async () => {
     return await logout.mutateAsync();

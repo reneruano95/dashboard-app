@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
-    if (!user && path !== "/sign-in") {
+    if (!user && path !== "/sign-in" && path !== "/") {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
@@ -48,16 +48,6 @@ export async function middleware(request: NextRequest) {
         return handleAgencyRole(path, user?.id!, supabase, request);
       }
     }
-  }
-
-  // rewrite root application to `/home` folder
-  if (
-    hostname === "localhost:3000" ||
-    hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
-  ) {
-    return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, request.url)
-    );
   }
 
   return response;

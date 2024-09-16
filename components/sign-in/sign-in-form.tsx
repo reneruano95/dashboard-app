@@ -19,10 +19,10 @@ import {
 import { SignIn } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/validations";
 import { cn } from "@/lib/utils";
-import { useAuthActions } from "@/lib/hooks/auth/use-auth";
+import { useAuth } from "@/lib/hooks/auth/use-auth";
 
 export const SignInForm = () => {
-  const { signIn } = useAuthActions();
+  const { signIn } = useAuth();
 
   const form = useForm<SignIn>({
     defaultValues: {
