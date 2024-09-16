@@ -6,12 +6,7 @@ export const getUserRole = async (supabase: TypedSupabaseClient) => {
     const { data, error } = await supabase.auth.getSession();
 
     if (error || !data.session) {
-      const errorMessage = error
-        ? "Error fetching user role"
-        : "Session not found";
-
-      console.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw error;
     }
 
     const userRole = getUserRoleFromSession(data.session);

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { updateSession } from "./lib/supabase/middleware";
 import { getUserRoleFromSession } from "./lib/utils";
-import { handleAdminRole, handleAgencyRole } from "./lib/redirect-utils";
+import { handleAdminRole, handleAgencyRole } from "./lib/middleware-utils";
 
 export async function middleware(request: NextRequest) {
   const { response, supabase } = await updateSession(request);

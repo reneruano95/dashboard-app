@@ -1,32 +1,34 @@
 "use server";
-import { Profile, SignIn } from "../types";
-import { createAdminAuthClient } from "../supabase/admin";
 
-export const createUser = async ({ email, password }: SignIn) => {
-  const supabase = createAdminAuthClient();
+import { createServerClient } from "../supabase/server";
+import { SignIn } from "../types";
 
-  const newUser: Partial<Profile> = {
-    username: email.split("@")[0],
-    full_name: "Rene Ruano",
-    avatar_url: "https://api.dicebear.com/9.x/pixel-art/svg",
-    status: "ACTIVE",
-  };
+export const signInWithPassword = async ({ email, password }: SignIn) => {
+  const supabase = createServerClient();
 
   try {
-    supabase.auth.admin
-      .createUser({
-        email,
-        password,
-        email_confirm: true,
-        user_metadata: {
-          ...newUser,
-          app_name: "dashboard-app",
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Error during sign in:", err);
+    throw err;
+  }
+};
+
+export const signOut = async () => {
+  const supabase = createServerClient();
+  try {
+    await supabase.auth.signOut();
   } catch (error) {
+    console.error("Error signing out:", error);
     throw error;
   }
 };

@@ -10,13 +10,15 @@ import { getUser } from "@/lib/queries/users";
 export const useUser = () => {
   const supabase = useMemo(() => createBrowserClient(), []);
 
-  const user = useQuery<User>({
+  const user = useQuery<User | null>({
     queryKey: [queriesKeys.user],
-    queryFn: async () => await getUser(supabase),
-    enabled: false,
+    queryFn: async () => await getUser(),
+    enabled: !!supabase.auth
+      .getSession()
+      .then((session) => session?.data?.session)
+      .catch(() => null),
     staleTime: Infinity,
-    refetchOnMount: false,
-    select: useCallback((data: User) => data, []),
+    select: useCallback((data: User | null) => data, []),
   });
 
   const userRole = useQuery<Role>({
@@ -24,7 +26,6 @@ export const useUser = () => {
     queryFn: async () => await getUserRole(supabase),
     enabled: !!user.data,
     staleTime: Infinity,
-    refetchOnMount: false,
     select: useCallback((data: Role) => data, []),
   });
 

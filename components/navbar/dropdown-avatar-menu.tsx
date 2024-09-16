@@ -7,17 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileIcon } from "@/components/icons/profile-icon";
 import { useUser } from "@/lib/hooks/users/use-user";
-import { useAuthActions } from "@/lib/hooks/auth/use-auth-actions";
-
-import { getQueryClient } from "@/components/providers/get-query-client";
+import { useAuthActions } from "@/lib/hooks/auth/use-auth";
 import { Icon } from "@/components/global/icon";
 
 export const DropdownAvatarMenu = () => {
-  const queryClient = getQueryClient();
   const { logout } = useAuthActions();
+
   const {
     user: { data: user },
   } = useUser();
@@ -25,14 +22,6 @@ export const DropdownAvatarMenu = () => {
   const handleSignOut = async () => {
     return await logout.mutateAsync();
   };
-
-  if (!user) {
-    queryClient.refetchQueries({
-      queryKey: ["user"],
-      type: "inactive",
-      exact: true,
-    });
-  }
 
   return (
     <div className="flex items-center gap-x-2">

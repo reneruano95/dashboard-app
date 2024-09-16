@@ -4,10 +4,9 @@ import { Fragment, useMemo } from "react";
 import { Icon } from "@/components/global/icon";
 import { Button } from "@/components/ui/button";
 import { PagesItemsSkeleton } from "./pages-items-skeleton";
-
-import { useUser } from "@/lib/hooks/users/use-user";
 import { sidebarPages } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/lib/hooks/users/use-user";
 
 interface PagesItemsProps {
   pathname: string;
@@ -16,7 +15,7 @@ interface PagesItemsProps {
 
 export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
   const {
-    userRole: { data: role, isPending },
+    userRole: { data: role, isLoading, isFetching, isRefetching, isPending },
   } = useUser();
 
   const filteredPages = useMemo(() => {
@@ -26,7 +25,7 @@ export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
     }));
   }, [role]);
 
-  if (isPending) {
+  if (isLoading || isFetching || isRefetching || isPending) {
     return <PagesItemsSkeleton />;
   }
 

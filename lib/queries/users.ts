@@ -1,28 +1,25 @@
-import { TypedSupabaseClient } from "../types";
+"use server";
 
-export const getUser = async (supabase: TypedSupabaseClient) => {
+import { verifySession } from "../actions/dal";
+import { createServerClient } from "../supabase/server";
+
+export const getUser = async () => {
+  const supabase = createServerClient();
+
+  const session = await verifySession(supabase);
+  if (!session) return null;
+
   try {
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      console.error("User not found. Signing out.");
-      await supabase.auth.signOut({ scope: "local" });
-      throw new Error("User not found");
-    }
-
-    const { data: userData, error: userDataError } = await supabase
+    const { data: userData, error } = await supabase
       .from("users")
       .select("*")
-      .eq("id", user.id)
+      .eq("id", session.userId)
       .throwOnError()
       .limit(1)
       .single();
 
-    if (userDataError || !userData) {
-      console.error("Error fetching user data:", userDataError);
+    if (error || !userData) {
+      console.error("Error fetching user data:", error);
       throw new Error("Error fetching user data");
     }
 

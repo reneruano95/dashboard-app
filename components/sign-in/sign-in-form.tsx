@@ -18,10 +18,8 @@ import {
 
 import { SignIn } from "@/lib/types";
 import { SignInSchema } from "@/lib/types/validations";
-import { SignInWithProviders } from "./sign-in-with-providers";
 import { cn } from "@/lib/utils";
-import { useAuthActions } from "@/lib/hooks/auth/use-auth-actions";
-import { createUser } from "@/lib/actions/auth";
+import { useAuthActions } from "@/lib/hooks/auth/use-auth";
 
 export const SignInForm = () => {
   const { signIn } = useAuthActions();
@@ -122,20 +120,6 @@ export const SignInForm = () => {
           </Button>
         </form>
       </Form>
-
-      {/* <Button
-        className="relative w-full"
-        onClick={async () => {
-          await createUser({
-            email: "reneruano@gmail.com",
-            password: "123456",
-          });
-        }}
-      >
-        Sign up
-      </Button> */}
-
-      <SignInWithProviders />
     </>
   );
 };

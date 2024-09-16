@@ -9,42 +9,29 @@ import { getAgencyByUser } from "@/lib/queries/agencies";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getUserRoleFromSession } from "@/lib/utils";
 import { SignIn } from "@/lib/types";
+import { getUser } from "@/lib/queries/users";
+import { signInWithPassword, signOut } from "@/lib/actions/auth";
 
 export const useAuthActions = () => {
   const router = useRouter();
-
   const supabase = useMemo(() => createBrowserClient(), []);
   const queryClient = useMemo(() => getQueryClient(), []);
 
   const signIn = useMutation({
-    mutationFn: async ({ email, password }: SignIn) => {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          console.error("Error signing in:", error);
-          throw new Error("Sign in failed");
-        }
-
-        return data;
-      } catch (err) {
-        console.error("Error during sign in:", err);
-        throw err;
-      }
-    },
+    mutationFn: async ({ email, password }: SignIn) =>
+      await signInWithPassword({ email, password }),
     mutationKey: ["signIn"],
-    onError: (error) => {
-      console.error("Error signing in:", error);
-    },
-
     onSuccess: async (data) => {
       const session = data.session;
 
       const userRole = getUserRoleFromSession(session);
       queryClient.setQueryData([queriesKeys.role], userRole);
+
+      const user = await queryClient.fetchQuery({
+        queryKey: [queriesKeys.user],
+        queryFn: async () => await getUser(),
+      });
+      queryClient.setQueryData([queriesKeys.user], user);
 
       if (userRole === "admin") {
         return router.replace("/dashboard");
@@ -72,14 +59,7 @@ export const useAuthActions = () => {
   });
 
   const logout = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.auth.signOut({ scope: "local" });
-
-      if (error) {
-        console.error("Error logging out:", error);
-        throw new Error("Error logging out");
-      }
-    },
+    mutationFn: async () => await signOut(),
     onError: (error) => {
       console.error("Error logging out:", error);
     },
