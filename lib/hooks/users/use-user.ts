@@ -1,6 +1,5 @@
-import { useCallback, useMemo } from "react";
+import { use, useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
 
 import { createBrowserClient } from "../../supabase/client";
 import { Role, User } from "../../types";
@@ -9,14 +8,19 @@ import { getUserRole } from "@/lib/queries/roles";
 import { getUser } from "@/lib/queries/users";
 
 export const useUser = () => {
-  const pathname = usePathname();
   const supabase = useMemo(() => createBrowserClient(), []);
+
+  const isActiveSession = useMemo(
+    () => !!supabase.auth.getSession().then((session) => !!session.data),
+    [supabase]
+  );
 
   const user = useQuery<User | null>({
     queryKey: [queriesKeys.user],
     queryFn: async () => await getUser(),
-    enabled: !!supabase.auth.getSession() && pathname !== "/sign-in",
+    enabled: isActiveSession,
     staleTime: Infinity,
+    refetchOnMount: false,
     select: useCallback((data: User | null) => data, []),
   });
 

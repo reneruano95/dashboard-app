@@ -1,6 +1,5 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { revalidateTag } from "next/cache";
 import { TypedSupabaseClient } from "../types";
 
 // Data Access Layer(DAL)

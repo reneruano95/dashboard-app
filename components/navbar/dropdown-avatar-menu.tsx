@@ -8,9 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ProfileIcon } from "@/components/icons/profile-icon";
+import { Icon } from "@/components/global/icon";
 import { useUser } from "@/lib/hooks/users/use-user";
 import { useAuth } from "@/lib/hooks/auth/use-auth";
-import { Icon } from "@/components/global/icon";
 
 export const DropdownAvatarMenu = () => {
   const {
@@ -20,7 +20,7 @@ export const DropdownAvatarMenu = () => {
   const { logout } = useAuth();
 
   const handleSignOut = async () => {
-    return await logout.mutateAsync();
+    await logout.mutateAsync();
   };
 
   return (
