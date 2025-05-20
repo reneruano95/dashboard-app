@@ -1,7 +1,5 @@
 import { redirect } from "next/navigation";
-
 import { createServerClient } from "@/lib/supabase/server";
-import { Sidebar } from "@/components/sidebar/sidebar";
 
 export default async function AppsLayout({
   children,
@@ -21,8 +19,7 @@ export default async function AppsLayout({
 
   return (
     <main className="flex items-center justify-center h-full">
-      <Sidebar />
-      <div className="flex-1 h-full overflow-y-auto pt-[48px]">{children}</div>
+      <div className="flex-1 h-full overflow-y-auto">{children}</div>
     </main>
   );
 }

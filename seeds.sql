@@ -1,3 +1,6 @@
+drop trigger if exists on_auth_user_created on auth.users;
+
+drop function if exists public.handle_new_user ();
 
 create function public.handle_new_user () returns trigger as $$
 begin
@@ -14,9 +17,22 @@ end;
 $$ language plpgsql security definer;
 
 create trigger on_auth_user_created
-after insert on auth.users 
-for each row execute procedure public.handle_new_user ();
+after insert on auth.users for each row
+execute procedure public.handle_new_user ();
 
+-- Custom types
+create type public.app_permission as enum(
+  'agencies.delete',
+  'agencies.update',
+  'agencies.read',
+  'agencies.create',
+  'users.delete',
+  'users.update',
+  'users.read',
+  'users.create'
+);
+
+create type public.app_role as enum('admin', 'agency_owner', 'agency_user');
 
 create table public.agencies (
   id uuid not null default gen_random_uuid (),
@@ -62,70 +78,26 @@ create table public.user_roles (
   constraint user_roles_user_id_fkey foreign key (user_id) references public.users (id) on delete cascade
 );
 
--- Custom types
-create type public.app_permission as enum('agencies.delete', 'agencies.update', 'agencies.read', 'agencies.create', 'users.delete', 'users.update', 'users.read', 'users.create');
-
-create type public.app_role as enum('admin', 'agency_owner', 'agency_user');
-
-alter table public.user_roles
-add constraint user_roles_user_id_fkey foreign key (user_id) references public.users (id) on delete cascade;
-
-alter table public.role_permissions
-add constraint role_permissions_role_fkey foreign key (role) references public.app_role (role);
-
-alter table public.role_permissions
-add constraint role_permissions_permission_fkey foreign key (permission) references public.app_permission (permission);
-
-alter table public.user_roles
-add constraint user_roles_role_fkey foreign key (role) references public.app_role (role);
-
-alter table public.user_roles
-add constraint user_roles_permission_fkey foreign key (permission) references public.app_permission (permission);
-
 alter table public.agencies
-add constraint agencies_role_fkey foreign key (role) references public.app_role (role);
-
-alter table public.agencies
-add constraint agencies_permission_fkey foreign key (permission) references public.app_permission (permission);
-
-alter table public.agencies
-add constraint agencies_user_id_fkey foreign key (user_id) references public.users (id);
-
-alter table public.agencies
-add constraint agencies_role_permission_key unique (role, permission);
-
-alter table public.user_roles
-add constraint user_roles_user_id_role_key unique (user_id, role);
-
-alter table public.role_permissions
-add constraint role_permissions_role_permission_key unique (role, permission);
-
-alter table public.agencies
-add constraint agencies_pkey primary key (id);
+alter column id
+set default gen_random_uuid ();
 
 alter table public.users
-add constraint users_pkey primary key (id);
+alter column id
+set default gen_random_uuid ();
 
 alter table public.role_permissions
-add constraint role_permissions_pkey primary key (id);
+alter column id
+set default gen_random_uuid ();
 
 alter table public.user_roles
-add constraint user_roles_pkey primary key (id);
+alter column id
+set default gen_random_uuid ();
 
 alter table public.agencies
-alter column id set default gen_random_uuid ();
+alter column created_at
+set default now();
 
 alter table public.users
-alter column id set default gen_random_uuid ();
-
-alter table public.role_permissions
-alter column id set default gen_random_uuid ();
-
-alter table public.user_roles
-alter column id set default gen_random_uuid ();
-
-alter table public.agencies
-alter column created_at set default now ();
-
-alter table public.users
-alter column updated_at set default now ();
+alter column updated_at
+set default now();

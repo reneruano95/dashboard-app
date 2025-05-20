@@ -37,17 +37,17 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (session) {
-      const userRole = getUserRoleFromSession(session);
+    // if (session) {
+    //   const userRole = getUserRoleFromSession(session);
 
-      if (userRole === "admin") {
-        return handleAdminRole(path, request);
-      }
+    //   if (userRole === "admin") {
+    //     return handleAdminRole(path, request);
+    //   }
 
-      if (userRole.startsWith("agency")) {
-        return handleAgencyRole(path, user?.id!, supabase, request);
-      }
-    }
+    //   if (userRole.startsWith("agency")) {
+    //     return handleAgencyRole(path, user?.id!, supabase, request);
+    //   }
+    // }
   }
 
   return response;

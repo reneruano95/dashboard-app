@@ -26,28 +26,30 @@ export const useAuth = () => {
       const userRole = getUserRoleFromSession(session);
       queryClient.setQueryData([queriesKeys.role], userRole);
 
-      if (userRole === "admin") {
-        return router.replace("/dashboard");
-      }
+      // if (userRole === "admin") {
+      //   return router.replace("/dashboard");
+      // }
 
-      if (userRole.startsWith("agency")) {
-        const agency = await queryClient.fetchQuery({
-          queryKey: [queriesKeys.agency],
-          queryFn: async () =>
-            await getAgencyByUser({
-              userId: data.user.id,
-              supabase,
-            }),
-        });
+      // if (userRole.startsWith("agency")) {
+      //   const agency = await queryClient.fetchQuery({
+      //     queryKey: [queriesKeys.agency],
+      //     queryFn: async () =>
+      //       await getAgencyByUser({
+      //         userId: data.user.id,
+      //         supabase,
+      //       }),
+      //   });
 
-        queryClient.setQueryData([queriesKeys.agency, agency.id], agency);
+      //   queryClient.setQueryData([queriesKeys.agency, agency.id], agency);
 
-        if (!agency) {
-          throw new Error("Agency not found");
-        }
+      //   if (!agency) {
+      //     throw new Error("Agency not found");
+      //   }
 
-        return router.replace(`/${agency.id}`);
-      }
+      //   return router.replace(`/${agency.id}`);
+      // }
+
+      return router.replace("/dashboard");
     },
   });
 

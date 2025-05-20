@@ -1,13 +1,11 @@
-"use client";
+import {RefObject} from "react";
+import {useIsMounted, useMediaQuery} from "usehooks-ts";
+import {MenuIcon} from "lucide-react";
 
-import { RefObject } from "react";
-import { useIsMounted, useMediaQuery } from "usehooks-ts";
-import { MenuIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { Icon } from "../global/icon";
-import { ModeToggle } from "../global/mode-toggle";
-import { DropdownAvatarMenu } from "./dropdown-avatar-menu";
+import {cn} from "@/lib/utils";
+import {Icon} from "../global/icon";
+import {ModeToggle} from "../global/mode-toggle";
+import {DropdownAvatarMenu} from "./dropdown-avatar-menu";
 import Breadcrumb from "./breadcrumb";
 
 interface NavbarProps {
@@ -19,12 +17,12 @@ interface NavbarProps {
 }
 
 export const Navbar = ({
-  id,
-  isCollapsed,
-  isResetting,
-  resetWidth,
-  navbarRef,
-}: NavbarProps) => {
+                         id,
+                         isCollapsed,
+                         isResetting,
+                         resetWidth,
+                         navbarRef,
+                       }: NavbarProps) => {
   const isMounted = useIsMounted();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -49,11 +47,11 @@ export const Navbar = ({
           />
         )}
         <div className="flex items-center justify-between w-full">
-          <Breadcrumb />
+          <Breadcrumb/>
           <div className="flex items-center gap-x-2">
-            <Icon name="Bell" className="h-6 w-6 text-muted-foreground" />
-            <ModeToggle />
-            <DropdownAvatarMenu />
+            <Icon name="Bell" className="h-6 w-6 text-muted-foreground"/>
+            <ModeToggle/>
+            <DropdownAvatarMenu/>
           </div>
         </div>
       </nav>

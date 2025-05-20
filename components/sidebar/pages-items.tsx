@@ -18,20 +18,20 @@ export const PagesItems = ({ pathname, mainPath }: PagesItemsProps) => {
     userRole: { data: role, isLoading, isFetching, isRefetching, isPending },
   } = useUser();
 
-  const filteredPages = useMemo(() => {
-    return sidebarPages.map(({ label, children }) => ({
-      label,
-      children: children.filter(({ roles }) => roles.includes(role!)),
-    }));
-  }, [role]);
+  // const filteredPages = useMemo(() => {
+  //   return sidebarPages.map(({ label, children }) => ({
+  //     label,
+  //     children: children.filter(({ roles }) => roles.includes(role!)),
+  //   }));
+  // }, [role]);
 
-  if (isLoading || isFetching || isRefetching || isPending) {
-    return <PagesItemsSkeleton />;
-  }
+  // if (isLoading || isFetching || isRefetching || isPending) {
+  //   return <PagesItemsSkeleton />;
+  // }
 
   return (
     <div className="px-2 mt-2 flex flex-col gap-[1px]">
-      {filteredPages.map(({ label, children }) => (
+      {sidebarPages.map(({ label, children }) => (
         <Fragment key={label}>
           <h3 className="mb-1 text-xs font-semibold text-zinc-500">{label}</h3>
           {children.map(({ title, icon, href }) => {

@@ -1,6 +1,6 @@
-import { memo } from "react";
-import { icons } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {memo} from "react";
+import {icons} from "lucide-react";
+import {cn} from "@/lib/utils";
 
 interface IconProps {
   name: keyof typeof icons;
@@ -8,7 +8,7 @@ interface IconProps {
   strokeWidth?: number;
 }
 
-export const Icon = memo(({ name, className, strokeWidth }: IconProps) => {
+export const Icon = memo(({name, className, strokeWidth}: IconProps) => {
   const IconComponent = icons[name];
 
   if (!IconComponent) {

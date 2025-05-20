@@ -1,4 +1,4 @@
-import { use, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { createBrowserClient } from "../../supabase/client";
